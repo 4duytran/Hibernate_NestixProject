@@ -1,1 +1,1 @@
-# Hibernate_NestixProject
+# nestfix
