@@ -1,7 +1,6 @@
 package service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,7 +10,6 @@ import org.hibernate.query.Query;
 
 import config.HibernateUtil;
 import entity.Genre_entity;
-import entity.MediaType_entity;
 import entity.Media_entity;
 import entity.Saga_entity;
 
@@ -66,6 +64,33 @@ public class Media_service {
 				}
 			}
 			return medias;
+	}
+	
+	public List<Media_entity> getListMusic() {
+		
+		List<Media_entity> musics = new ArrayList<>();
+		Session session = null;
+		 Transaction tx = null;
+		 
+		try {
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			tx = session.beginTransaction();
+			Query<Media_entity> q = session.createQuery("select distinct m from media m join fetch m.mediaType left join fetch m.genres where m.mediaType.mediaType_name = ?0 order by m.media_id", Media_entity.class);
+			q.setParameter(0, "Musique");
+			musics = q.getResultList();
+			
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+		}
+		finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		
+		return musics;
 	}
 	
 	public List<Media_entity> getListBook() {
@@ -181,9 +206,42 @@ public class Media_service {
 				if(session != null) {
 					session.close();
 				}
+			}	
+		}
+	
+	public void editMusic(Integer id, String mediaTitle , Integer mediaYear, String[] listGenre) {
+		Session session = null;
+		Transaction tx = null;
+		Genre_entity genre = null;
+		
+		try {
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			tx = session.beginTransaction();
+			Media_entity media = getMediaByIdSimple(id);
+			for (String str : listGenre) {
+				Query<Genre_entity> q = session.createQuery("select g from genre g where g.genre_name = ?0", Genre_entity.class);
+				q.setParameter(0, str);
+				genre = q.getSingleResult();
+				genre.setGenre_name(str);
+				media.addGenre(genre);	
 			}
 			
+			media.setMedia_title(mediaTitle);
+			media.setMedia_year(mediaYear);
+			tx.commit();
+			
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			e.printStackTrace();
 		}
+		finally {
+			if(session != null) {
+				session.close();
+			}
+		}	
+	}
 	
 	public void editBook(Integer id, String mediaTitle , Integer mediaYear, Long isbn, String sagaName, String[] listGenre) {
 		Session session = null;

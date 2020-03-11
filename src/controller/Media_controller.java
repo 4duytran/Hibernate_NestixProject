@@ -33,7 +33,7 @@ public class Media_controller  {
 		columnsNames.add("Media Genres");
 		columnsNames.add("Media Saga");
 		columnsNames.add("Media type");
-		columnsNames.add("Blocked");
+		columnsNames.add("Valid");
 		List<Media_entity> medias = new ArrayList<Media_entity>();
 		medias = media_service.getListMedia();
 		return new MediaTableModel(columnsNames, medias);

@@ -27,4 +27,9 @@ public class Main_controller {
 		main_view.getBookPanel().initTableContent();
 	}
 	
+	public void showMusicView( ActionEvent e ) {
+		main_view.getContent().show(main_view.getMain(), "Music Panel");
+		main_view.getMusicPanel().initTableContent();
+	}
+	
 }

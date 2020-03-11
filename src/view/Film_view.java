@@ -47,11 +47,8 @@ public class Film_view extends JPanel {
 	private JButton f_addSaga = new JButton(new ImageIcon(getClass().getResource("/button_plus.png")));
 	private JButton f_addGenre = new JButton(new ImageIcon(getClass().getResource("/button_plus.png")));
 	
-	private List f_listGenre = new List(10, true);;
-	private List f_listSaga = new List(10, false);;
-
-	@SuppressWarnings("rawtypes")
-	private JComboBox objectList = new JComboBox();
+	private List f_listGenre = new List(10, true);
+	private List f_listSaga = new List(10, false);
 
 	private JTable f_table = new JTable();
 
@@ -76,7 +73,7 @@ public class Film_view extends JPanel {
 		f_table.addMouseListener(new Film_controller(this)); 
 		// ADD PANEL TO INTERFACE
 		f_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.PINK),
-				"FILM Panel", TitledBorder.RIGHT, TitledBorder.TOP));
+				" FILM Panel  ", TitledBorder.RIGHT, TitledBorder.TOP));
 		textInsertModel();
 		f_panel.add(f_content);
 		f_panel.add(f_tablecontent);

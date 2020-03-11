@@ -29,8 +29,10 @@ public class Main_view extends JFrame implements ActionListener{
 	private Media_view mediaPanel = new Media_view();
 	private Film_view filmPanel = new Film_view();
 	private Book_view bookPanel = new Book_view();
+	private Music_view musicPanel = new Music_view();
 
 	private Main_controller main_controller ;
+	
 	
 	public Main_view() {
 		// init window pricipal
@@ -47,6 +49,7 @@ public class Main_view extends JFrame implements ActionListener{
 		main.add(mediaPanel, "Media Panel");
 		main.add(filmPanel, "Film Panel");
 		main.add(bookPanel, "Book Panel");
+		main.add(musicPanel, "Music Panel");
 		content.show(main, "Media Panel");
 		
 		// init main app
@@ -62,6 +65,10 @@ public class Main_view extends JFrame implements ActionListener{
 
 	public Film_view getFilmPanel() {
 		return filmPanel;
+	}
+	
+	public Music_view getMusicPanel() {
+		return musicPanel;
 	}
 
 	public JPanel getMain() {
@@ -104,21 +111,14 @@ public class Main_view extends JFrame implements ActionListener{
 		bookBtn.addActionListener((e) -> main_controller.showBookView(e));
 		toolBar.add(bookBtn);
 		
-//		toolBar.addSeparator(new Dimension(20, 10));
-//
-//		JButton musicBtn = new JButton(new ImageIcon(getClass().getResource("/musical.png")));
-//		musicBtn.setToolTipText("List Music");
-//
-//		musicBtn.addActionListener(e -> {
-//			try {
-//				showMusic(e);
-//				menu.show(contentMainLeftDown, "Music Panel");
-//			} catch (SQLException e1) {
-//
-//				e1.printStackTrace();
-//			}
-//		});
-//		toolBar.add(musicBtn);
+		toolBar.addSeparator(new Dimension(20, 10));
+		JButton musicBtn = new JButton(new ImageIcon(getClass().getResource("/musical.png")));
+		musicBtn.setToolTipText("List Music");
+		musicBtn.addActionListener((e)->main_controller.showMusicView(e));
+		toolBar.add(musicBtn);
+		
+		
+		
 //		toolBar.addSeparator(new Dimension(20, 10));
 //
 //		JButton userBtn = new JButton(new ImageIcon(getClass().getResource("/user.png")));

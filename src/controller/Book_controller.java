@@ -51,7 +51,7 @@ public class Book_controller extends MouseAdapter  {
 		columnsNames.add("Genre");
 		columnsNames.add("Media Saga");
 		columnsNames.add("Media type");
-		columnsNames.add("Blocked");
+		columnsNames.add("Valid");
 		List<Media_entity> medias = new ArrayList<Media_entity>();
 		medias = media_service.getListBook();
 		return new BookTableModel(columnsNames, medias);

@@ -58,12 +58,9 @@ public class Book_view extends JPanel {
 	private JButton b_addSaga = new JButton(new ImageIcon(getClass().getResource("/button_plus.png")));
 	private JButton b_addGenre = new JButton(new ImageIcon(getClass().getResource("/button_plus.png")));
 	
-	private List b_listGenre = new List(10, true);;
-	private List b_listSaga = new List(10, false);;
+	private List b_listGenre = new List(10, true);
+	private List b_listSaga = new List(10, false);
 	
-	@SuppressWarnings("rawtypes")
-	private JComboBox objectList = new JComboBox();
-
 	private JTable b_table = new JTable();
 
 	private JScrollPane b_scroll = new JScrollPane(b_table);
@@ -88,7 +85,7 @@ public class Book_view extends JPanel {
 		b_table.addMouseListener(new Book_controller(this)); 
 		// ADD PANEL TO INTERFACE
 		b_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.PINK),
-				"BOOK Panel", TitledBorder.RIGHT, TitledBorder.TOP));
+				" BOOK Panel  ", TitledBorder.RIGHT, TitledBorder.TOP));
 		textInsertModel();
 		b_panel.add(b_content);
 		b_panel.add(b_tablecontent);
