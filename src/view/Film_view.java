@@ -66,6 +66,7 @@ public class Film_view extends JPanel {
 		film_controller.genreList();
 		film_controller.sagaList();
 	
+		f_addSaga.addActionListener((e)->film_controller.addNewSaga(e));
 		f_edit.addActionListener((e)->film_controller.updateFilm(e));
 			
 		//Init table

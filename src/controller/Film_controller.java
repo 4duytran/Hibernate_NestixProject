@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import entity.Media_entity;
+import entity.Saga_entity;
 import service.Genre_service;
 import service.Media_service;
 import service.Saga_service;
@@ -80,6 +81,24 @@ public class Film_controller extends MouseAdapter  {
 			JOptionPane.showMessageDialog(this.film_view, "This media is exist already in database!", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	
+	}
+	
+	public void addNewSaga(ActionEvent e) {
+		
+		String sagaTitle = film_view.getTextFilmSaga().getText();
+		
+		if (sagaTitle.trim().isEmpty()) {
+			JOptionPane.showMessageDialog(this.film_view,"The case is empty \n" + "Please complete  before retry!");
+		} else {
+			List<Saga_entity> sagaList = saga_service.getSagaListName();
+			if (sagaList.contains(sagaTitle)) {
+				JOptionPane.showMessageDialog(this.film_view,"This saga name " + "\"" +sagaTitle.toUpperCase() + "\"" + " is already existed in database", "Error", JOptionPane.ERROR_MESSAGE);
+			} else {
+				saga_service.addSaga(sagaTitle);
+				sagaList();
+				JOptionPane.showMessageDialog(this.film_view, "The new saga edited successfully");
+			}	
+		}
 	}
 	
 	@Override

@@ -91,5 +91,31 @@ public class Saga_service {
 		return saga;
 	}
 	
+	public void addSaga(String sagaName) {
+		
+		Session session = null;
+		Transaction tx = null;
+		
+		try {
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			tx = session.beginTransaction();
+			Saga_entity saga = new Saga_entity();
+			saga.setSaga_Name(sagaName);
+			session.persist(saga);
+			tx.commit();
+			
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			e.printStackTrace();
+		}
+		finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+	
 	
 }
