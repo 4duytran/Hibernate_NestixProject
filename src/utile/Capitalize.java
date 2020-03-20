@@ -15,7 +15,6 @@ public class Capitalize {
                 array[i] = Character.toUpperCase(array[i]);
             }
         }
- 
         return new String(array);
     }
 	

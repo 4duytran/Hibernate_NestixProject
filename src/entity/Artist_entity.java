@@ -6,6 +6,9 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 
@@ -16,9 +19,17 @@ public class Artist_entity extends Person_entity {
 	@Column(name="artiste_Surnom")
 	private String surName;
 	
-	@ManyToMany(mappedBy = "artists", cascade = CascadeType.PERSIST)
-    private Set<Media_entity> medias = new HashSet<>();
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {
+	        CascadeType.PERSIST,
+	        CascadeType.MERGE
+	    })
+	@JoinTable(name = "role_artiste", joinColumns = {
+	        @JoinColumn(name = "artiste_Id")},
+	        inverseJoinColumns = {@JoinColumn(name = "media_Id")})
+	private Set<Media_entity> medias = new HashSet<>();
     
+	
+
 	public Set<Media_entity> getMedias() {
 		return medias;
 	}
@@ -30,5 +41,10 @@ public class Artist_entity extends Person_entity {
 	public void setSurName(String surName) {
 		this.surName = surName;
 	}
+	
+	public void addMedia(Media_entity media) {
+        medias.add(media);
+        media.getArtists().add(this);
+    }
 	
 }

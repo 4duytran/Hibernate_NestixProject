@@ -56,23 +56,6 @@ public class Media_entity {
 			)
 	private Set<Genre_entity> genres = new HashSet<>();
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {
-	        CascadeType.PERSIST,
-	        CascadeType.MERGE
-	    })
-	@JoinTable(name = "role_artiste", joinColumns = {
-	        @JoinColumn(name = "media_Id")},
-	        inverseJoinColumns = {@JoinColumn(name = "artiste_Id")})
-	private Set<Artist_entity> artists = new HashSet<>();
-
-//	@ManyToMany(fetch = FetchType.LAZY, cascade = {
-//	        CascadeType.PERSIST,
-//	        CascadeType.MERGE
-//	    })
-//	@JoinTable(name = "role_artiste", joinColumns = {
-//	        @JoinColumn(name = "media_Id")},
-//	        inverseJoinColumns = {@JoinColumn(name = "metier_Id")})
-//	private Set<Job_entity> job = new HashSet<>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = {
 	        CascadeType.PERSIST,
@@ -87,6 +70,18 @@ public class Media_entity {
 	private Map<Artist_entity, Job_entity> artist_job = new HashMap<>();
 	
 
+	@ManyToMany(mappedBy = "medias", cascade = CascadeType.PERSIST)
+    private Set<Artist_entity> artists = new HashSet<>();
+    
+    
+	public Set<Artist_entity> getArtists() {
+		return artists;
+	}
+
+	public void setArtists(Set<Artist_entity> artists) {
+		this.artists = artists;
+	}
+
 	public Map<Artist_entity, Job_entity> getArtist_job() {
 		return artist_job;
 	}
@@ -95,6 +90,7 @@ public class Media_entity {
 		this.artist_job = artist_job;
 	}
 
+	
 	public Set<Genre_entity> getGenre() {
 		return genres;
 	}
@@ -139,10 +135,6 @@ public class Media_entity {
 		this.media_valid = media_valid;
 	}
 	
-	public void addArtist(Artist_entity artist) {
-        artists.add(artist);
-        artist.getMedias().add(this);
-    }
 	
 	public void addGenre(Genre_entity genre) {
         genres.add(genre);

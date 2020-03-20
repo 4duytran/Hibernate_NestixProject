@@ -61,6 +61,7 @@ public class Artist_view extends JPanel {
 		
 		a_edit.addActionListener((e)->artist_controller.editArtist(e));
 		a_delete.addActionListener((e)->artist_controller.removeArtist(e));
+		a_add.addActionListener((e)->artist_controller.creatNewArtist(e));
 		
 		a_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.PINK),"ARTIST Panel ", TitledBorder.RIGHT, TitledBorder.TOP));
 		a_panel.add(a_content, BorderLayout.CENTER);

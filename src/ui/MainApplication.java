@@ -25,17 +25,12 @@ public class MainApplication {
 //		
 //		for (Media_entity media : medias) {
 //			System.out.println(media.getMedia_title()+"  "+media.getMedia_type().getMediaType_name());
-//			for (Artist_entity artist : media.getArtist()) {
-//				System.out.println(artist.getSurName());
-//			}
-//			for (Job_entity job : media.getJob()) {
-//				System.out.println(job.getJobName());
-//			}
 //			media.getArtist_job().entrySet().forEach(entry->{
 //			    System.out.println(entry.getKey().getSurName() + " " + entry.getValue().getJobName());  
 //			 });
 //			System.out.println("-------------------------------");
 //		}
+		
 //		System.out.println(test.getMediaById(35));
 		
 //		Media_service test = new Media_service();

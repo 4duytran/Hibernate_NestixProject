@@ -6,9 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
+import com.sun.istack.Nullable;
 
 import config.HibernateUtil;
 import entity.Artist_entity;
@@ -45,7 +49,7 @@ public class Artist_service {
 	
 	public Artist_entity getArtistBySurName(String surName) {
 		
-		Artist_entity artist = new Artist_entity();
+		Artist_entity artist = null;
 		Session session = null;
 		Transaction tx = null;
 		
@@ -55,11 +59,8 @@ public class Artist_service {
 			Query<Artist_entity> q = session.createQuery("select a from artiste a where a.surName = ?0", Artist_entity.class);
 			q.setParameter(0, surName);
 			artist = q.getSingleResult();
-		} catch (Exception e) {
-			if (tx != null) {
-				tx.rollback();
-			}
-			e.printStackTrace();
+		} catch (NoResultException e) {
+			System.out.println("No artist found");
 		}
 		finally {
 			if (session != null) {
@@ -146,37 +147,8 @@ public class Artist_service {
 			q.setParameter(1, id);
 			artist = q.getSingleResult();
 			
-		} catch (Exception ex) {
-			if (tx != null) {
-				tx.rollback();
-			}
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
-		return artist;	
-	}
-	
-	public Artist_entity checkArtistExisteBySurname(String surName) {
-		
-		Artist_entity artist = null;
-		Session session = null;
-		Transaction tx = null;
-		
-		try {
-			
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
-			tx = session.beginTransaction();
-			Query<Artist_entity> q = session.createQuery("select a from artiste a where a.surName = ?0", Artist_entity.class);
-			q.setParameter(0, surName);
-			artist = q.getSingleResult();
-			
-		} catch (Exception ex) {
-			if (tx != null) {
-				tx.rollback();
-			}
+		} catch (NoResultException e) {
+			System.out.println("No artist found");
 		}
 		finally {
 			if (session != null) {
@@ -191,25 +163,47 @@ public class Artist_service {
 		Session session = null;
 		Transaction tx = null;
 		Artist_entity artist = null;
-		
-		 
+
 		try {
 			
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 			tx = session.beginTransaction();
 			artist = getArtistByIdSimple(id);
 			 Set<Media_entity> medias = artist.getMedias();
-			 for (Media_entity media : medias) {
-				 System.out.println(media.getMedia_title());
-			 }
 			 medias.clear();
-//	 		session.delete(artist);
+	 		session.delete(artist);
 			tx.commit();
 			
-		} catch (Exception ex) {
+		} catch (Exception e) {
 			if (tx != null) {
 				tx.rollback();
 			}
+			e.printStackTrace();
+		}
+		finally {
+			if (session != null) {
+				session.close();
+			}
+		}	
+	}
+	
+	public void creatNewArtist(Artist_entity artist) {
+		
+		Session session = null;
+		Transaction tx = null;
+		
+		try {
+			
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			tx = session.beginTransaction();
+			session.persist(artist);
+			tx.commit();
+			
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			e.printStackTrace();
 		}
 		finally {
 			if (session != null) {

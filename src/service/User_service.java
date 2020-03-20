@@ -3,6 +3,8 @@ package service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -85,10 +87,11 @@ public class User_service {
 			tx = session.beginTransaction();
 			user = session.get(User_entity.class, id);
 			
-		} catch (Exception ex) {
+		} catch (Exception e) {
 			if (tx != null) {
 				tx.rollback();
 			}
+			e.printStackTrace();
 		}
 		finally {
 			if (session != null) {
@@ -120,10 +123,8 @@ public User_entity getUserByIdSimple(Integer id) {
 			q.setParameter(0, email);
 			user = q.getSingleResult();
 			
-		} catch (Exception ex) {
-			if (tx != null) {
-				tx.rollback();
-			}
+		} catch (NoResultException e) {
+			System.out.println("No user found");
 		}
 		finally {
 			if (session != null) {
@@ -145,10 +146,11 @@ public User_entity getUserByIdSimple(Integer id) {
 			session.persist(user);
 			tx.commit();
 			
-		} catch (Exception ex) {
+		} catch (Exception e) {
 			if (tx != null) {
 				tx.rollback();
 			}
+			e.printStackTrace();
 		}
 		finally {
 			if (session != null) {
@@ -170,10 +172,11 @@ public void removeUser(Integer id) {
 			session.delete(user);
 			tx.commit();
 			
-		} catch (Exception ex) {
+		} catch (Exception e) {
 			if (tx != null) {
 				tx.rollback();
 			}
+			e.printStackTrace();
 		}
 		finally {
 			if (session != null) {
@@ -197,10 +200,8 @@ public void removeUser(Integer id) {
 			q.setParameter(1, id);
 			user = q.getSingleResult();
 			
-		} catch (Exception ex) {
-			if (tx != null) {
-				tx.rollback();
-			}
+		} catch (NoResultException e) {
+			System.out.println("No user found");
 		}
 		finally {
 			if (session != null) {
@@ -212,7 +213,6 @@ public void removeUser(Integer id) {
 	}
 	
 	public User_entity checkEmailExiste(String email) {
-		
 		
 		User_entity user = null;
 		Session session = null;
@@ -226,10 +226,8 @@ public void removeUser(Integer id) {
 			q.setParameter(0, email);
 			user = q.getSingleResult();
 			
-		} catch (Exception ex) {
-			if (tx != null) {
-				tx.rollback();
-			}
+		} catch (NoResultException e) {
+			System.out.println("No user found");
 		}
 		finally {
 			if (session != null) {
@@ -237,7 +235,6 @@ public void removeUser(Integer id) {
 			}
 		}
 		return user;
-		
 	}
 	
 	

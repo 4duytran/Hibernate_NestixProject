@@ -23,7 +23,7 @@ public class Media_service {
 		try {
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 			tx =session.beginTransaction();
-			Query<Media_entity> query = session.createQuery("select j from media j join fetch j.mediaType left join fetch j.genres left join fetch j.saga", Media_entity.class);
+			Query<Media_entity> query = session.createQuery("select distinct j from media j join fetch j.mediaType left join fetch j.genres left join fetch j.saga", Media_entity.class);
 			medias = query.getResultList();	
 			
 		} catch (Exception e) {
@@ -83,13 +83,13 @@ public class Media_service {
 			if (tx != null) {
 				tx.rollback();
 			}
+			e.printStackTrace();
 		}
 		finally {
 			if (session != null) {
 				session.close();
 			}
 		}
-		
 		return musics;
 	}
 	
