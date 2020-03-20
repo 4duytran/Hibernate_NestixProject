@@ -1,5 +1,6 @@
 package view.tablemodel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,16 +8,17 @@ import javax.swing.table.AbstractTableModel;
 
 import entity.Genre_entity;
 import entity.Media_entity;
+import entity.User_entity;
 
-public class MediaTableModel extends AbstractTableModel {
+public class UserTableModel extends AbstractTableModel{
 
-	private static final long serialVersionUID = 5618868029037443430L;
-	
+
+	private static final long serialVersionUID = 1897460878493742727L;
 	private List<String> columnsNames = new ArrayList<String>();
-	private List<Media_entity> list = new ArrayList<Media_entity>();
+	private List<User_entity> list = new ArrayList<User_entity>();
 	
 	
-	public MediaTableModel(List<String> columnsNames, List< Media_entity > values) {
+	public UserTableModel(List<String> columnsNames, List< User_entity > values) {
 		this.columnsNames = columnsNames;
 		this.list = values;
 	}
@@ -40,7 +42,7 @@ public class MediaTableModel extends AbstractTableModel {
     public Class getColumnClass(int column) {
         switch (column) {
             case 0: return String.class;
-            case 1: return Integer.class;
+            case 1: return String.class;
             case 2:return String.class;
             case 3: return String.class;
             case 4: return String.class;
@@ -51,23 +53,19 @@ public class MediaTableModel extends AbstractTableModel {
     }
 	
 	@Override 
-	public Object getValueAt( int line, int column ) {
+	public Object getValueAt ( int line, int column ) {
 //		return values.get( line ).get( column );
-		Media_entity m = list.get(line);
-		List<String> genre = new ArrayList<>();
-		for (Genre_entity list : m.getGenre()) {
-			genre .add(list.getGenre_name());
-		}
+		User_entity u = list.get(line);
+		String s = new SimpleDateFormat("dd/MMMM//yyyy").format(u.getDate());
 			switch (column) {
-	        case 0: return m.getMedia_title(); 
-	        case 1: return m.getMedia_year();
-	        case 2: return (genre.isEmpty()) ? "Null" : String.join(",", genre);
-	        case 3:return (null == m.getSaga()) ? "Null" : m.getSaga().getSaga_Name();
-	        case 4: return m.getMedia_type().getMediaType_name(); 
-	        case 5:return  m.getMedia_valid() ;
-			}
+	        case 0: return u.getFirstName(); 
+	        case 1: return u.getLastName();
+	        case 2:return u.getUserEmail();
+	        case 3: return u.getLevel().getLevelName();
+	        case 4: return s;
+	        case 5: return u.getBlocked() ;
+	        }
         return null;
 	}
-	
 	
 }

@@ -1,8 +1,6 @@
 package controller;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -12,7 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import entity.Media_entity;
-import entity.Saga_entity;
 import service.Genre_service;
 import service.Media_service;
 import service.Saga_service;
@@ -62,44 +59,116 @@ public class Film_controller extends MouseAdapter  {
 	public void updateFilm(ActionEvent e) {
 		List<Media_entity> medias = new ArrayList<Media_entity>();
 		Integer id = null;
-		String title = film_view.getTextFilmTitle().getText();
-		Integer year = Integer.parseInt(film_view.getTextFilmYear().getText());
+		Integer year = null;
+		String title = null;
+		Boolean valid = null;
 		String type = "Film";
 		String saga = film_view.getF_listSaga().getSelectedItem();
 		String[] genreList = film_view.getF_listGenre().getSelectedItems();
-		medias =  media_service.getMedia(title, year, type);
-		for (Media_entity media : medias) {
-			id = media.getMedia_id() ;
-		}	 
-		
-		if (id == null || (medias.size() <= 1 && id.equals(film_view.getFilmId())) ) {
-			media_service.removeGenre(film_view.getFilmId());
-			media_service.editFilm(film_view.getFilmId(), title, year, saga, genreList);	
-			film_view.initTableContent();
-			JOptionPane.showMessageDialog(this.film_view, "The media edited successfully");
+		if (film_view.getTextFilmTitle().getText().isEmpty() || film_view.getTextFilmYear().getText().isEmpty()) {
+			JOptionPane.showMessageDialog(this.film_view, "The case title and year are required !", "Error", JOptionPane.ERROR_MESSAGE);
 		} else {
-			JOptionPane.showMessageDialog(this.film_view, "This media is exist already in database!", "Error", JOptionPane.ERROR_MESSAGE);
+			title = film_view.getTextFilmTitle().getText();
+			year = Integer.parseInt(film_view.getTextFilmYear().getText());
+			valid = film_view.getCheckbox().isSelected();
+			medias =  media_service.getMedia(title, year, type);
+			for (Media_entity media : medias) {
+				id = media.getMedia_id() ;
+			}
+			if (id == null || (medias.size() <= 1 && id.equals(film_view.getFilmId()))) {
+				media_service.removeGenre(film_view.getFilmId());
+				media_service.editFilm(film_view.getFilmId(), title, year, saga, genreList, valid);	
+				film_view.initTableContent();
+				JOptionPane.showMessageDialog(this.film_view, "The media edited successfully");
+			} else {
+				JOptionPane.showMessageDialog(this.film_view, "This media is exist already in database!", "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
+		
+	}
 	
+	public void removeMedia(ActionEvent e) {
+		Media_entity media = new Media_entity();
+		Integer id = film_view.getFilmId();
+		if ( id != null ) {
+			media = media_service.getMediaById(id);
+			String title = media.getMedia_title();
+			int reponse = JOptionPane.showConfirmDialog(this.film_view, "Do you want to delete the media "+title.toUpperCase()+" ?", "Delete media confirmation", JOptionPane.YES_NO_OPTION);
+			if (reponse == 0) {
+				media_service.removeMedia(film_view.getFilmId());
+				film_view.initTableContent();
+				film_view.getTextFilmTitle().setText(null);
+				Film_view.getTextFilmYear().setText(null);
+				film_view.getF_listGenre().deselect(film_view.getF_listGenre().getSelectedIndex());
+				film_view.getF_listSaga().deselect(film_view.getF_listSaga().getSelectedIndex());
+				film_view.setFilmId(null);
+				JOptionPane.showMessageDialog(this.film_view, "The media deleted successfully");
+			}
+			
+		} else {
+			JOptionPane.showMessageDialog(this.film_view, "There is an error occurred! Can not found the media", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	public void addNewSaga(ActionEvent e) {
 		
+		boolean find = false;
 		String sagaTitle = film_view.getTextFilmSaga().getText();
 		
 		if (sagaTitle.trim().isEmpty()) {
 			JOptionPane.showMessageDialog(this.film_view,"The case is empty \n" + "Please complete  before retry!");
 		} else {
-			List<Saga_entity> sagaList = saga_service.getSagaListName();
-			if (sagaList.contains(sagaTitle)) {
+			List<String> sagaList = saga_service.getSagaListName();
+			for (String saga : sagaList) {
+				if (sagaTitle.equalsIgnoreCase(saga)) {
+					find = true;
+					break;
+				} else {
+					find = false;
+				}	
+			}
+			if (find) {
 				JOptionPane.showMessageDialog(this.film_view,"This saga name " + "\"" +sagaTitle.toUpperCase() + "\"" + " is already existed in database", "Error", JOptionPane.ERROR_MESSAGE);
 			} else {
-				saga_service.addSaga(sagaTitle);
+				saga_service.addSaga(sagaTitle);	
+				film_view.getF_listSaga().removeAll();
 				sagaList();
-				JOptionPane.showMessageDialog(this.film_view, "The new saga edited successfully");
-			}	
+				film_view.getTextFilmSaga().setText("");
+				JOptionPane.showMessageDialog(this.film_view, "The new saga added successfully");
+			}
+			
 		}
 	}
+	
+	public void addNewGenre(ActionEvent e) {
+			
+			boolean find = false;
+			String genreTitle = film_view.getTextFilmGenre().getText();
+			
+			if (genreTitle.trim().isEmpty()) {
+				JOptionPane.showMessageDialog(this.film_view,"The case is empty \n" + "Please complete  before retry!");
+			} else {
+				List<String> genreList = genre_service.getGenreListName();
+				for (String genre : genreList) {
+					if (genreTitle.equalsIgnoreCase(genre)) {
+						find = true;
+						break;
+					} else {
+						find = false;
+					}	
+				}
+				if (find) {
+					JOptionPane.showMessageDialog(this.film_view,"This genre name " + "\"" +genreTitle.toUpperCase() + "\"" + " is already existed in database", "Error", JOptionPane.ERROR_MESSAGE);
+				} else {
+					genre_service.addNewGenre(genreTitle);
+					film_view.getF_listGenre().removeAll();
+					genreList();
+					film_view.getTextFilmGenre().setText("");
+					JOptionPane.showMessageDialog(this.film_view, "The new genre added successfully");
+				}
+				
+			}
+		}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -112,8 +181,9 @@ public class Film_controller extends MouseAdapter  {
 		int row = target.getSelectedRow();
 		film_view.getTextFilmTitle().setText(target.getValueAt(row, 0).toString());
 		film_view.getTextFilmYear().setText(target.getValueAt(row, 1).toString());
+		film_view.getCheckbox().setSelected((boolean) target.getValueAt(row, 5));
 		String genre = target.getValueAt(row, 2).toString();
-		if (genre != null && !genre.isEmpty()) {
+		if (genre != null && !genre.isEmpty() && !genre.equals("Null")) {
 			genreList  = genre.split(",");
 			for (String str : genreList) {
 				film_view.getF_listGenre().select(listGenre.indexOf(str));

@@ -67,5 +67,33 @@ import entity.Genre_entity;
 			return mediaGenreListName;
 		}
 		
+		
+		public void addNewGenre(String genreName) {
+			
+			Session session = null;
+			Transaction tx = null;
+			
+			try {
+				
+				session = HibernateUtil.getSessionFactory().getCurrentSession();
+				tx = session.beginTransaction();
+				Genre_entity genre = new Genre_entity();
+				genre.setGenre_name(genreName);
+				session.persist(genre);
+				tx.commit();
+				
+			} catch (Exception e) {
+				if (tx != null) {
+					tx.rollback();
+				}
+				e.printStackTrace();
+			}
+			finally {
+				if (session != null) {
+					session.close();
+				}
+			}
+			
+		}
 	
 }

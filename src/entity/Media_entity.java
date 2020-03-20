@@ -1,6 +1,8 @@
 package entity;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
 
 @Entity(name="media")
 public class Media_entity {
@@ -38,7 +42,7 @@ public class Media_entity {
 	@JoinColumn(name="saga_Id")
 	private Saga_entity saga;
 
-	@Column(name = "valid")
+	@Column(name = "valid", insertable=false)
 	private boolean media_valid ;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {
@@ -51,8 +55,46 @@ public class Media_entity {
 			inverseJoinColumns = {@JoinColumn(name="genre_Id" )}
 			)
 	private Set<Genre_entity> genres = new HashSet<>();
-
 	
+//	@ManyToMany(fetch = FetchType.LAZY, cascade = {
+//	        CascadeType.PERSIST,
+//	        CascadeType.MERGE
+//	    })
+//	@JoinTable(name = "role_artiste", joinColumns = {
+//	        @JoinColumn(name = "media_Id")},
+//	        inverseJoinColumns = {@JoinColumn(name = "artiste_Id")})
+//	private Set<Artist_entity> artist = new HashSet<>(0);
+//
+//	@ManyToMany(fetch = FetchType.LAZY, cascade = {
+//	        CascadeType.PERSIST,
+//	        CascadeType.MERGE
+//	    })
+//	@JoinTable(name = "role_artiste", joinColumns = {
+//	        @JoinColumn(name = "media_Id")},
+//	        inverseJoinColumns = {@JoinColumn(name = "metier_Id")})
+//	private Set<Job_entity> job = new HashSet<>(0);
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = {
+	        CascadeType.PERSIST,
+	        CascadeType.MERGE
+	    })
+	@JoinTable(
+			name ="role_artiste",
+			joinColumns = {@JoinColumn(table="media",name="media_Id")},
+			inverseJoinColumns = {@JoinColumn(name="metier_Id")}
+			)
+	@MapKeyJoinColumn(name = "artiste_Id")
+	private Map<Artist_entity, Job_entity> artist_job = new HashMap<>();
+	
+
+	public Map<Artist_entity, Job_entity> getArtist_job() {
+		return artist_job;
+	}
+
+	public void setArtist_job(Map<Artist_entity, Job_entity> artist_job) {
+		this.artist_job = artist_job;
+	}
+
 	public Set<Genre_entity> getGenre() {
 		return genres;
 	}

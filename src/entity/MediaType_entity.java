@@ -7,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity(name="type_media")
-
 public class MediaType_entity {
 
 	@Id

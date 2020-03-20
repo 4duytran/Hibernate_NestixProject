@@ -39,6 +39,11 @@
         <mapping class="entity.MediaType_entity" />
         <mapping class="entity.Genre_entity" />
         <mapping class="entity.Saga_entity" />
+        <mapping class="entity.Person_entity" />
+        <mapping class="entity.User_entity" />
+        <mapping class="entity.Artist_entity" />
+        <mapping class="entity.Job_entity" />
+        <mapping class="entity.Level_entity" />
     </session-factory>
 
 </hibernate-configuration>

@@ -10,7 +10,7 @@ import java.awt.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -35,6 +35,7 @@ public class Film_view extends JPanel {
 	private JLabel f_saga = new JLabel("Saga");
 	private JLabel f_genre_add = new JLabel("Add new Genre");
 	private JLabel f_saga_add = new JLabel("Add new Saga");
+	private JLabel labelFilmValid = new JLabel("Valid ");
 	
 	private static JTextField textFilmYear = new JTextField(20);
 	private JTextField textFilmTitle = new JTextField(20);
@@ -58,6 +59,8 @@ public class Film_view extends JPanel {
 	
 	private Integer filmId;
 	
+	private JCheckBox checkbox = new JCheckBox();
+
 
 	public Film_view() {
 	
@@ -67,13 +70,15 @@ public class Film_view extends JPanel {
 		film_controller.sagaList();
 	
 		f_addSaga.addActionListener((e)->film_controller.addNewSaga(e));
+		f_addGenre.addActionListener((e)->film_controller.addNewGenre(e));
 		f_edit.addActionListener((e)->film_controller.updateFilm(e));
-			
+		f_delete.addActionListener((e)->film_controller.removeMedia(e));
+		
 		//Init table
 		initTableContent() ;
 		f_table.addMouseListener(new Film_controller(this)); 
 		// ADD PANEL TO INTERFACE
-		f_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.PINK),
+		f_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.PINK),
 				" FILM Panel  ", TitledBorder.RIGHT, TitledBorder.TOP));
 		textInsertModel();
 		f_panel.add(f_content);
@@ -134,6 +139,14 @@ public class Film_view extends JPanel {
 		this.textFilmSaga = textFilmSaga;
 	}
 	
+	public JCheckBox getCheckbox() {
+		return checkbox;
+	}
+
+	public void setCheckbox(JCheckBox checkbox) {
+		this.checkbox = checkbox;
+	}
+	
 	//Model insert
 	private GridBagConstraints textInsertModel() {
 		
@@ -146,6 +159,9 @@ public class Film_view extends JPanel {
 	 
 	        constraints.gridx = 1;
 	        f_content.add(textFilmTitle, constraints);
+	        
+	        constraints.gridx = 2;
+	        f_content.add(checkbox, constraints);
 	         
 	        constraints.gridx = 0;
 	        constraints.gridy = 2;     

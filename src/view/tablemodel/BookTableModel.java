@@ -20,6 +20,7 @@ public class BookTableModel extends AbstractTableModel  {
 		this.list = values;
 	}
 	
+	
 	@Override 
 	public String getColumnName(int i) {
 		return columnsNames.get( i );
@@ -35,6 +36,21 @@ public class BookTableModel extends AbstractTableModel  {
 		return list.size();
 	}
 
+	@Override
+    public Class getColumnClass(int column) {
+        switch (column) {
+            case 0: return String.class;
+            case 1: return Integer.class;
+            case 2:return Long.class;
+            case 3: return String.class;
+            case 4: return String.class;
+            case 5: return String.class;
+            case 6:return Boolean.class;
+            default:
+                return String.class;
+        }
+    }
+	
 	@Override 
 	public Object getValueAt ( int line, int column ) {
 //		return values.get( line ).get( column );
@@ -47,10 +63,10 @@ public class BookTableModel extends AbstractTableModel  {
 	        case 0: return m.getMedia_title(); 
 	        case 1: return m.getMedia_year();
 	        case 2: return (null == m.getIsbn()) ? "Null" : m.getIsbn();
-	        case 3:return String.join(",", genre);
+	        case 3:return (genre.isEmpty()) ? "Null" : String.join(",", genre);
 	        case 4:return (null == m.getSaga()) ? "Null" : m.getSaga().getSaga_Name();
 	        case 5: return m.getMedia_type().getMediaType_name(); 
-	        case 6: return ( m.getMedia_valid() == true) ?  "Yes" :   "No";
+	        case 6: return m.getMedia_valid();
 	        }
         return null;
 	}

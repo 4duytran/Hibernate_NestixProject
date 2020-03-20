@@ -85,4 +85,23 @@ public class TestHibernate {
 		}
 		return media;
 	}
+	
+	public List<Media_entity> getListArtistJob() {
+		List<Media_entity> medias = new ArrayList<Media_entity>();
+		Session session = null;
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			Query<Media_entity> query = session.createQuery("select distinct m from media m join fetch m.artist_job join fetch m.mediaType", Media_entity.class);
+			medias = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			if(session != null) {
+				session.close();
+			}
+		}
+		return medias;	
+	}
+	
 }

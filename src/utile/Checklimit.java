@@ -9,7 +9,6 @@ import view.Book_view;
 import view.Film_view;
 import view.Media_view;
 import view.Music_view;
-import view_backup.Livre_view;
 
 public class Checklimit extends PlainDocument {
 
@@ -59,6 +58,9 @@ public class Checklimit extends PlainDocument {
 	 	    	}
 	 	    	if (Film_view.getTextFilmYear().getText().length() != 0) {
 		 	    	Film_view.getTextFilmYear().setText(Film_view.getTextFilmYear().getText().substring(0, Film_view.getTextFilmYear().getText().length() - 1)); 
+	 	    	}
+	 	    	if (Book_view.getTextBookYear().getText().length() != 0) {
+	 	    		Book_view.getTextBookYear().setText(Book_view.getTextBookYear().getText().substring(0, Book_view.getTextBookYear().getText().length() - 1)); 
 	 	    	}
 	 	    	if (Music_view.getTextMusicYear().getText().length() != 0) {
 	 	    		Music_view.getTextMusicYear().setText(Music_view.getTextMusicYear().getText().substring(0, Music_view.getTextMusicYear().getText().length() - 1)); 

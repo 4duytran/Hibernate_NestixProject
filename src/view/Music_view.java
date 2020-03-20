@@ -10,6 +10,7 @@ import java.awt.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -54,19 +55,24 @@ public class Music_view extends JPanel{
 	
 	private Integer musicId;
 	
+	private JCheckBox checkbox = new JCheckBox();
 	
+
 	public Music_view() {
 		
 		music_controller = new Music_controller(this);
 		textMusicYear.setDocument(new Checklimit(4));
 		music_controller.genreList();
 		
-		mu_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.PINK),
+		mu_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.PINK),
 				"MUSIC Panel ", TitledBorder.RIGHT, TitledBorder.TOP));
 		initTableContent() ;
 		textInsertModel();
+		
 		mu_table.addMouseListener(new Music_controller(this)); 
 		mu_edit.addActionListener((e)->music_controller.updateMusic(e));
+		mu_delete.addActionListener((e) -> music_controller.removeMedia(e));
+		mu_addGenre.addActionListener((e)->music_controller.addNewGenre(e));
 		
 		mu_panel.add(mu_content);
 		mu_panel.add(mu_tablecontent);
@@ -94,6 +100,9 @@ public class Music_view extends JPanel{
  
         constraints.gridx = 1;
         mu_content.add(textMusicTitle, constraints);
+        
+        constraints.gridx = 2;
+        mu_content.add(checkbox, constraints);
          
         constraints.gridx = 0;
         constraints.gridy = 2;     
@@ -102,7 +111,6 @@ public class Music_view extends JPanel{
         constraints.gridx = 1;
         mu_content.add(textMusicYear, constraints);
   
-        
         constraints.gridx = 0;
         constraints.gridy = 3;     
         mu_content.add(mu_genre, constraints);
@@ -145,7 +153,7 @@ public class Music_view extends JPanel{
 		return musicId;
 	}
 	
-	public void setFilmId(Integer musicId) {
+	public void setMusicId(Integer musicId) {
 		this.musicId = musicId;
 	}
 	
@@ -157,7 +165,7 @@ public class Music_view extends JPanel{
 		return textMusicTitle;
 	}
 
-	public JTextField getTextFilmGenre() {
+	public JTextField getTextMusicGenre() {
 		return textMusicGenre;
 	}
 
@@ -165,6 +173,12 @@ public class Music_view extends JPanel{
 		this.textMusicGenre = textFilmGenre;
 	}
 
-	
+	public JCheckBox getCheckbox() {
+		return checkbox;
+	}
+
+	public void setCheckbox(JCheckBox checkbox) {
+		this.checkbox = checkbox;
+	}
 	
 }

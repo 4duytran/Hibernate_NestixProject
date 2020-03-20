@@ -41,15 +41,16 @@ public class Media_view extends JPanel {
 	private JLabel labelMediaType = new JLabel("Media Type: ");
 	private JButton buttonInsert = new JButton("Ajouter");
 	
-	@SuppressWarnings("rawtypes")
-	private JComboBox objectList = new JComboBox();
+	
+	private JComboBox<Object> objectList = new JComboBox<Object>();
 
 	private JTable m_table = new JTable();
 	private JScrollPane scrollAll = new JScrollPane(m_table);
 
 	private  Media_controller media_controller;
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
+	
 	public Media_view() {
 	
 		media_controller = new Media_controller(this);
@@ -58,7 +59,7 @@ public class Media_view extends JPanel {
 		textMediaTitle.setPlaceholder("Title of new media");
 
 		
-		objectList.setModel(new DefaultComboBoxModel(media_controller.mediaType()));
+		objectList.setModel(new DefaultComboBoxModel<Object>(media_controller.mediaType()));
 		objectList.insertItemAt("--None--", 0);
 		objectList.setSelectedIndex(0);
 		
@@ -68,7 +69,7 @@ public class Media_view extends JPanel {
 		initTableContent() ;
 		
 		// ADD PANEL TO INTERFACE
-		m_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.PINK),
+		m_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.PINK),
 				" MEDIA Panel  ", TitledBorder.RIGHT, TitledBorder.TOP));
 		textInsertModel();
 		m_panel.add(m_content);

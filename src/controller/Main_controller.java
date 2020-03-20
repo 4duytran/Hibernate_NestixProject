@@ -32,4 +32,14 @@ public class Main_controller {
 		main_view.getMusicPanel().initTableContent();
 	}
 	
+	public void showUserView( ActionEvent e ) {
+		main_view.getContent().show(main_view.getMain(), "User Panel");
+		main_view.getUserPanel().initTableContent();
+	}
+	
+	public void showArtistView( ActionEvent e ) {
+		main_view.getContent().show(main_view.getMain(), "Artist Panel");
+		main_view.getArtistPanel().initTableContent();
+	}
+	
 }

@@ -1,14 +1,11 @@
 package ui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
-import controller.Media_controller;
 import entity.Media_entity;
-import service.Media_service;
 import service.TestHibernate;
 import view.Login_view;
 
@@ -22,22 +19,43 @@ public class MainApplication {
 		Login_view interfaceApp = new Login_view();
 		interfaceApp.setVisible(true);
 		
+	
+		TestHibernate test = new TestHibernate();
+		List<Media_entity> medias = test.getListArtistJob();
 		
-//		TestHibernate test = new TestHibernate();
+		for (Media_entity media : medias) {
+			System.out.println(media.getMedia_title()+"  "+media.getMedia_type().getMediaType_name());
+//			for (Artist_entity artist : media.getArtist()) {
+//				System.out.println(artist.getSurName());
+//			}
+//			for (Job_entity job : media.getJob()) {
+//				System.out.println(job.getJobName());
+//			}
+			media.getArtist_job().entrySet().forEach(entry->{
+			    System.out.println(entry.getKey().getSurName() + " " + entry.getValue().getJobName());  
+			 });
+			System.out.println("-------------------------------");
+		}
 //		System.out.println(test.getMediaById(35));
 		
 //		Media_service test = new Media_service();
 //		test.getMedia("war", 2000,"Film");
-		
-//		List<Media_entity> medias = new ArrayList<Media_entity>();
+//		String z = null;
+//		User_service test = new User_service();
+//		List<User_entity> medias = new ArrayList<User_entity>();
 //		List< ArrayList<Object> > values = new ArrayList<ArrayList<Object>>();
-//		medias = test.getListMedia();
-//		for (Media_entity media : medias) {
-//			System.out.println(media.getMedia_title());
+//		medias = test.getListUser();
+//		for (User_entity media : medias) {
+//			String s = new SimpleDateFormat("MMMM/dd/yyyy").format(media.getDate());
+//			if (null != media.getDob()) {
+//				z = new SimpleDateFormat("MMMM/dd/yyyy").format(media.getDob());
+//			} 
+//			System.out.println(media.getP_id() + "  " + media.getFirstName() + "  " + media.getLastName() + "  " +s + " ------" + z +  "  " + media.getLevel().getLevelName());
 //		}
-//	
 		
-		
+//		String pw_hash = "$2y$10$ISd90To1jfCxtNEFjI0FKOqaP6FKV6MkkB8PokexKformpQ0MwaTa".replaceFirst("2y", "2a");
+//		System.out.println("jBCrypt Hash: " +pw_hash);
+//		System.out.println(BCrypt.checkpw("test", pw_hash));
 		
 //		TestHibernate test = new TestHibernate();
 //		List<Media_entity> medias = new ArrayList<Media_entity>();

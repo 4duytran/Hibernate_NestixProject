@@ -30,7 +30,9 @@ public class Main_view extends JFrame implements ActionListener{
 	private Film_view filmPanel = new Film_view();
 	private Book_view bookPanel = new Book_view();
 	private Music_view musicPanel = new Music_view();
-
+	private User_view userPanel = new User_view();
+	private Artist_view artistPanel = new Artist_view();
+	
 	private Main_controller main_controller ;
 	
 	
@@ -46,10 +48,14 @@ public class Main_view extends JFrame implements ActionListener{
 		// Add main window
 		
 		main.setLayout(content);
+		
 		main.add(mediaPanel, "Media Panel");
 		main.add(filmPanel, "Film Panel");
 		main.add(bookPanel, "Book Panel");
 		main.add(musicPanel, "Music Panel");
+		main.add(userPanel, "User Panel");
+		main.add(artistPanel, "Artist Panel");
+		
 		content.show(main, "Media Panel");
 		
 		// init main app
@@ -69,6 +75,15 @@ public class Main_view extends JFrame implements ActionListener{
 	
 	public Music_view getMusicPanel() {
 		return musicPanel;
+	}
+	
+	public User_view getUserPanel() {
+		return userPanel;
+	}
+
+	
+	public Artist_view getArtistPanel() {
+		return artistPanel;
 	}
 
 	public JPanel getMain() {
@@ -119,26 +134,24 @@ public class Main_view extends JFrame implements ActionListener{
 		
 		
 		
-//		toolBar.addSeparator(new Dimension(20, 10));
-//
-//		JButton userBtn = new JButton(new ImageIcon(getClass().getResource("/user.png")));
-//		userBtn.setToolTipText("Users");
-//		userBtn.addActionListener(e -> {
-//			try {
-//				showAllUsers(e);
-//				menu.show(contentMainLeftDown, "Users Panel");
-//			} catch (SQLException e1) {
-//
-//				e1.printStackTrace();
-//			}
-//		});
-//		toolBar.add(userBtn);
-//
+		toolBar.addSeparator(new Dimension(20, 10));
+		JButton userBtn = new JButton(new ImageIcon(getClass().getResource("/user.png")));
+		userBtn.setToolTipText("Users");
+		userBtn.addActionListener((e)->main_controller.showUserView(e));
+		toolBar.add(userBtn);
+		
+		toolBar.addSeparator(new Dimension(20, 10));
+		JButton artistBtn = new JButton(new ImageIcon(getClass().getResource("/artist.png")));
+		artistBtn.setToolTipText("Users");
+		artistBtn.addActionListener((e)->main_controller.showArtistView(e));
+		toolBar.add(artistBtn);
+
 		toolBar.addSeparator(new Dimension(50, 10));
 		JButton buttonSearch = new JButton(new ImageIcon(getClass().getResource("/loupe.png")));
 		toolBar.add(textSearch);
 		toolBar.add(buttonSearch);
 
+		
 		return toolBar;
 
 	}

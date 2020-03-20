@@ -37,6 +37,19 @@ public class MusicTableModel extends AbstractTableModel {
 		return list.size();
 	}
 
+	@Override
+    public Class getColumnClass(int column) {
+        switch (column) {
+            case 0: return String.class;
+            case 1: return Integer.class;
+            case 2:return String.class;
+            case 3: return String.class;
+            case 4:return Boolean.class;
+            default:
+                return Boolean.class;
+        }
+    }
+	
 	@Override 
 	public Object getValueAt ( int line, int column ) {
 //		return values.get( line ).get( column );
@@ -48,9 +61,9 @@ public class MusicTableModel extends AbstractTableModel {
 			switch (column) {
 	        case 0: return m.getMedia_title(); 
 	        case 1: return m.getMedia_year();
-	        case 2:return String.join(",", genre);
+	        case 2:return (genre.isEmpty()) ? "Null" : String.join(",", genre);
 	        case 3: return m.getMedia_type().getMediaType_name(); 
-	        case 4: return ( m.getMedia_valid() == true) ?  "Yes" :   "No";
+	        case 4: return m.getMedia_valid() ;
 	        }
         return null;
 	}

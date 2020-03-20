@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -10,6 +11,7 @@ import java.awt.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -45,6 +47,7 @@ public class Book_view extends JPanel {
 	private JLabel b_saga = new JLabel("Saga");
 	private JLabel b_genre_add = new JLabel("Add new Genre");
 	private JLabel b_saga_add = new JLabel("Add new Saga");
+	private JLabel labelBookValid = new JLabel("Valid ");
 	
 	private static JTextField textBookYear = new JTextField(20);
 	private JTextField textBookTitle = new JTextField(20);
@@ -69,6 +72,8 @@ public class Book_view extends JPanel {
 	
 	private Integer bookId;
 	
+	private JCheckBox checkbox = new JCheckBox();
+	
 
 	public Book_view() {
 	
@@ -79,12 +84,14 @@ public class Book_view extends JPanel {
 		book_controller.sagaList();
 	
 		b_edit.addActionListener((e)->book_controller.updateBook(e));
-			
+		b_addSaga.addActionListener((e)->book_controller.addNewSaga(e));	
+		b_delete.addActionListener((e) -> book_controller.removeMedia(e));
+		
 		//Init table
 		initTableContent() ;
 		b_table.addMouseListener(new Book_controller(this)); 
 		// ADD PANEL TO INTERFACE
-		b_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.PINK),
+		b_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.PINK),
 				" BOOK Panel  ", TitledBorder.RIGHT, TitledBorder.TOP));
 		textInsertModel();
 		b_panel.add(b_content);
@@ -108,6 +115,9 @@ public class Book_view extends JPanel {
 	 
 	        constraints.gridx = 1;
 	        b_content.add(textBookTitle, constraints);
+	        
+	        constraints.gridx = 2;
+	        b_content.add(checkbox, constraints);
 	         
 	        constraints.gridx = 0;
 	        constraints.gridy = 2;     
@@ -244,6 +254,14 @@ public class Book_view extends JPanel {
 
 	public void setBookId(Integer bookId) {
 		this.bookId = bookId;
+	}
+	
+	public JCheckBox getCheckbox() {
+		return checkbox;
+	}
+
+	public void setCheckbox(JCheckBox checkbox) {
+		this.checkbox = checkbox;
 	}
 	
 	
