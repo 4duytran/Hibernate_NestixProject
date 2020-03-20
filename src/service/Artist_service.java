@@ -3,6 +3,8 @@ package service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -10,6 +12,8 @@ import org.hibernate.query.Query;
 
 import config.HibernateUtil;
 import entity.Artist_entity;
+import entity.Job_entity;
+import entity.Media_entity;
 import entity.User_entity;
 
 public class Artist_service {
@@ -186,13 +190,20 @@ public class Artist_service {
 		
 		Session session = null;
 		Transaction tx = null;
+		Artist_entity artist = null;
 		
+		 
 		try {
 			
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 			tx = session.beginTransaction();
-			Artist_entity artist = getArtistByIdSimple(id);
-			session.delete(artist);
+			artist = getArtistByIdSimple(id);
+			 Set<Media_entity> medias = artist.getMedias();
+			 for (Media_entity media : medias) {
+				 System.out.println(media.getMedia_title());
+			 }
+			 medias.clear();
+//	 		session.delete(artist);
 			tx.commit();
 			
 		} catch (Exception ex) {
