@@ -16,8 +16,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import com.toedter.calendar.JDateChooser;
+
 import controller.Artist_controller;
-import controller.Book_controller;
 
 public class Artist_view extends JPanel {
 
@@ -37,8 +38,8 @@ public class Artist_view extends JPanel {
 	private JTextField textArtistLastName = new JTextField(20);
 	private JTextField textArtistSurName = new JTextField(20);
 	private JTextField textArtistDob = new JTextField(9);
-	
-	
+	private JDateChooser dateChoice = new JDateChooser();
+
 	private JButton a_add = new JButton("Add new artist");
 	private JButton a_edit = new JButton("Edit");
 	private JButton a_delete = new JButton("Delete");
@@ -62,6 +63,8 @@ public class Artist_view extends JPanel {
 		a_edit.addActionListener((e)->artist_controller.editArtist(e));
 		a_delete.addActionListener((e)->artist_controller.removeArtist(e));
 		a_add.addActionListener((e)->artist_controller.creatNewArtist(e));
+		
+		dateChoice.setDateFormatString("dd-MM-yyyy");
 		
 		a_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.PINK),"ARTIST Panel ", TitledBorder.RIGHT, TitledBorder.TOP));
 		a_panel.add(a_content, BorderLayout.CENTER);
@@ -112,8 +115,12 @@ public class Artist_view extends JPanel {
         constraints.gridx = 1;
         a_content.add(textArtistDob, constraints);
         
+//        constraints.gridx = 1;
+//        constraints.gridy = 5;     
+//        a_content.add(dateChoice, constraints);
+        
         constraints.gridx = 0;
-        constraints.gridy = 5;
+        constraints.gridy = 6;
         constraints.anchor = GridBagConstraints.CENTER;
         a_content.add(a_edit, constraints);
         
@@ -167,6 +174,8 @@ public class Artist_view extends JPanel {
 		this.textArtistDob = textArtistDob;
 	}
 	
-	
+	public JDateChooser getDateChoice() {
+		return dateChoice;
+	}
 	
 }

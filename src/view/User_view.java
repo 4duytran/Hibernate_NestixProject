@@ -21,6 +21,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import com.toedter.calendar.JDateChooser;
+
 import controller.Book_controller;
 import controller.User_controller;
 
@@ -137,6 +139,7 @@ public class User_view extends JPanel {
         
         constraints.gridx = 2;
         u_content.add(u_add, constraints);
+        
         
 		return constraints;
 

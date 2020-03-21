@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.text.JTextComponent;
 
 import entity.Artist_entity;
 import service.Artist_service;
@@ -218,6 +219,7 @@ public class Artist_controller extends MouseAdapter{
 		Artist_entity artist = artist_service.getArtistBySurName(target.getValueAt(row, 2).toString());
 		artist_view.setArtistId(artist.getP_id());
 		String date =  (null == artist.getDob()) ? "" : new SimpleDateFormat("dd-MM-yyyy").format(artist.getDob());
+		Date date1 = null;
 		artist_view.getTextArtistFirstName().setText(target.getValueAt(row, 0).toString());
 		artist_view.getTextArtistLastName().setText(target.getValueAt(row, 1).toString());
 		artist_view.getTextArtistSurName().setText(target.getValueAt(row, 2).toString());

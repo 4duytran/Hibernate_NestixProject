@@ -14,7 +14,6 @@ import service.Genre_service;
 import service.Media_service;
 import service.Saga_service;
 import view.Book_view;
-import view.Film_view;
 import view.tablemodel.BookTableModel;
 
 public class Book_controller extends MouseAdapter  {
