@@ -1,19 +1,23 @@
 package controller;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import entity.MediaType_entity;
 import entity.Media_entity;
 import service.MediaType_service;
 import service.Media_service;
+import view.InfoMedia_view;
 import view.Media_view;
 import view.tablemodel.MediaTableModel;
 
-public class Media_controller  {
+public class Media_controller  extends MouseAdapter {
 
 	private Media_service media_service;
 	private MediaType_service mediaType_service;
@@ -67,6 +71,29 @@ public class Media_controller  {
 		} else {
 			JOptionPane.showMessageDialog(this.media_view,"The case is empty \n" + "Please complete the media type before retry!");
 		}
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		JTable target = (JTable) e.getSource();
+		int row = target.getSelectedRow();
+		String title = target.getValueAt(row, 0).toString();
+		String year = target.getValueAt(row, 1).toString();
+		String genre = target.getValueAt(row, 2).toString();
+		String type = target.getValueAt(row, 4).toString();
+		if (e.getClickCount() == 2 && target.getSelectedRow() != -1) {
+            InfoMedia_view info = new InfoMedia_view();
+            info.getLabelTitleContent().setText(title);
+            info.getLabelYearContent().setText(year);
+            info.getLabelGenreContent().setText(genre);
+            Media_entity media = media_service.getSimpleMedia(title, Integer.parseInt(year) , type);
+            if (media != null) {
+            	media.getArtist_job().entrySet().forEach(entry->{
+    			    System.out.println(entry.getKey().getSurName() + " " + entry.getValue().getJobName());  
+    			 });
+            }          
+            info.setVisible(true);         
+        }
 	}
 
 	

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -118,6 +120,30 @@ public class Media_service {
 		}
 		return medias;
 }
+	
+	public Media_entity getSimpleMedia(String title , Integer year , String type) {
+		Media_entity media = null;
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			tx = session.beginTransaction();
+			Query<Media_entity> query = session.createQuery("select m from media m join fetch m.mediaType join fetch m.artist_job where m.media_title=?0 and m.media_year=?1 and m.mediaType.mediaType_name=?2", Media_entity.class);
+			query.setParameter(0, title);
+			query.setParameter(1, year);
+			query.setParameter(2, type);
+			media = query.getSingleResult();
+			
+		}  catch (NoResultException e) {
+			System.out.println("No media found");
+		}
+		finally {
+			if(session != null) {
+				session.close();
+			}
+		}
+		return media;
+	}
 	
 	public List<Media_entity> getMedia(String title , Integer year , String type) {
 		List<Media_entity> medias = new ArrayList<Media_entity>();

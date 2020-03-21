@@ -67,7 +67,7 @@ public class Media_view extends JPanel {
 			
 		//Init table
 		initTableContent() ;
-		
+		m_table.addMouseListener(new Media_controller(this));
 		// ADD PANEL TO INTERFACE
 		m_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.PINK),
 				" MEDIA Panel  ", TitledBorder.RIGHT, TitledBorder.TOP));
