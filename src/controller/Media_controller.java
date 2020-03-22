@@ -79,8 +79,11 @@ public class Media_controller  extends MouseAdapter {
 		int row = target.getSelectedRow();
 		String title = target.getValueAt(row, 0).toString();
 		String year = target.getValueAt(row, 1).toString();
-		String genre = target.getValueAt(row, 2).toString();
+		String genre = "<html>"+target.getValueAt(row, 2).toString()+"</html>";
 		String type = target.getValueAt(row, 4).toString();
+		List<String> director = new ArrayList<>();
+		List<String> autor = new ArrayList<>();
+		List<String> actor = new ArrayList<>();
 		if (e.getClickCount() == 2 && target.getSelectedRow() != -1) {
             InfoMedia_view info = new InfoMedia_view();
             info.getLabelTitleContent().setText(title);
@@ -90,7 +93,26 @@ public class Media_controller  extends MouseAdapter {
             if (media != null) {
             	media.getArtist_job().entrySet().forEach(entry->{
     			    System.out.println(entry.getKey().getSurName() + " " + entry.getValue().getJobName());  
+    			    if ( entry.getValue().getJobName().equals("Realisateur")) {
+    			    	director.add(entry.getKey().getSurName());
+    			    }
+    			    if (entry.getValue().getJobName().equals("Acteur")) {
+    			    	actor.add(entry.getKey().getSurName());
+    			    }
+    			    if (entry.getValue().getJobName().equals("Auteur")) {
+    			    	autor.add(entry.getKey().getSurName());
+    			    }
     			 });
+            	
+            	if(!director.isEmpty()) {
+            		info.getLabelDirector().setText("Director");
+            		info.getLabelDirectorContent().setText(director.toString().replaceAll("\\[|\\]", ""));
+            	}
+            	if(!actor.isEmpty()) {
+            		info.getLabelActor().setText("Actor");
+            		info.getLabelActorContent().setText(actor.toString().replaceAll("\\[|\\]", ""));
+            	}
+            	
             }          
             info.setVisible(true);         
         }

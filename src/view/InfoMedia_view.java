@@ -26,15 +26,24 @@ public class InfoMedia_view extends JFrame {
 	
 	private JLabel labelTitle = new JLabel("Title");
 	private JLabel labelTitleContent = new JLabel();
+	
 	private JLabel labelYear = new JLabel("Year");
 	private JLabel labelYearContent = new JLabel();
+	
 	private JLabel labelGenre = new JLabel("Genre");
 	private JLabel labelGenreContent = new JLabel();
-	private JLabel labelAutor = new JLabel("Autor");
+	
+	private JLabel labelAutor = new JLabel("");
 	private JLabel labelAutorContent = new JLabel();
-	private JLabel labelActor = new JLabel("Actor");
+	
+	private JLabel labelActor = new JLabel("");
 	private JLabel labelActorContent = new JLabel();
 	
+	private JLabel labelDirector = new JLabel("");
+	private JLabel labelDirectorContent = new JLabel();
+	
+	private JLabel labelSinger = new JLabel("");
+	private JLabel labelSingerContent = new JLabel();
 
 
 	private Integer id;
@@ -59,23 +68,57 @@ public class InfoMedia_view extends JFrame {
 	}
 	
 	
+	public JLabel getLabelTitle() {
+		return labelTitle;
+	}
+
+
+	public JLabel getLabelYear() {
+		return labelYear;
+	}
+
+
+	public JLabel getLabelGenre() {
+		return labelGenre;
+	}
+
+
+	public JLabel getLabelAutor() {
+		return labelAutor;
+	}
+
+
+	public JLabel getLabelActor() {
+		return labelActor;
+	}
+
+
+	public JLabel getLabelDirector() {
+		return labelDirector;
+	}
+
+
+	public JLabel getLabelDirectorContent() {
+		return labelDirectorContent;
+	}
+
+
+	public JLabel getLabelSinger() {
+		return labelSinger;
+	}
+
+
+	public JLabel getLabelSingerContent() {
+		return labelSingerContent;
+	}
+
+
 	public JLabel getLabelTitleContent() {
 		return labelTitleContent;
 	}
 
-
-	public void setLabelTitleContent(JLabel labelTitleContent) {
-		this.labelTitleContent = labelTitleContent;
-	}
-
-
 	public JLabel getLabelYearContent() {
 		return labelYearContent;
-	}
-
-
-	public void setLabelYearContent(JLabel labelYearContent) {
-		this.labelYearContent = labelYearContent;
 	}
 
 
@@ -113,15 +156,12 @@ public class InfoMedia_view extends JFrame {
 	}
 
 
-	public void setLabelActorContent(JLabel labelActorContent) {
-		this.labelActorContent = labelActorContent;
-	}
-
 	private GridBagConstraints contentModel() {
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets = new Insets(10, 10, 10, 10);
+		
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		panelInfo.add(labelTitle, constraints);
@@ -145,6 +185,13 @@ public class InfoMedia_view extends JFrame {
 
 		constraints.gridx = 0;
 		constraints.gridy = 3;
+		panelInfo.add(labelDirector, constraints);
+		
+		constraints.gridx = 1;
+		panelInfo.add(labelDirectorContent, constraints);
+		
+		constraints.gridx = 0;
+		constraints.gridy = 4;
 		panelInfo.add(labelAutor, constraints);
 		
 		constraints.gridx = 1;
@@ -156,6 +203,13 @@ public class InfoMedia_view extends JFrame {
 
 		constraints.gridx = 1;
 		panelInfo.add(labelActorContent, constraints);
+		
+		constraints.gridx = 0;
+		constraints.gridy = 4;
+		panelInfo.add(labelSinger, constraints);
+		
+		constraints.gridx = 1;
+		panelInfo.add(labelSingerContent, constraints);
 		
 		return constraints;
 
