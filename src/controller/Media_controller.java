@@ -96,6 +96,7 @@ public class Media_controller  extends MouseAdapter {
 		List<String> singer = new ArrayList<>();
 		List<Media_entity>medias = new ArrayList<Media_entity>();
 		List<Media_Artist_Role_R> mar = new ArrayList<Media_Artist_Role_R>();
+		
 		if (e.getClickCount() == 2 && target.getSelectedRow() != -1) {
             InfoMedia_view infoMedia_view = new InfoMedia_view();
             GridBagConstraints constraints = infoMedia_view.getConstraints();
@@ -107,14 +108,14 @@ public class Media_controller  extends MouseAdapter {
             	
             	for (Media_entity elt : medias) {
             		mar = mar_service.getListArtistJobWithId(elt.getMedia_id());
-            	}
-          
-            	for (Media_Artist_Role_R elt  : mar) {
-                	
-            		infoMedia_view.getLabelId().setText(Integer.toString(elt.getMedias().getMedia_id()));
-                	if (elt.getMedias().getIsbn() != null) {
-                		isbn = Long.toString(elt.getMedias().getIsbn());
+            		infoMedia_view.getLabelId().setText(Integer.toString(elt.getMedia_id()));
+            		if (elt.getIsbn() != null) {
+                		isbn = Long.toString(elt.getIsbn());
                 	}
+            	}
+            	
+            	for (Media_Artist_Role_R elt  : mar) {
+
                 	if (elt.getJobs().getJobName().equals("Acteur")) {
                 		actor.add(elt.getArtists().getSurName());
                 	}
