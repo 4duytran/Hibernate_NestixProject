@@ -68,7 +68,7 @@ public class Music_controller  extends MouseAdapter {
 			}	 
 			
 			if (id == null || (medias.size() <= 1 && id.equals(music_view.getMusicId())) ) {
-				media_service.removeGenre(music_view.getMusicId());
+				media_service.removeMediaGenre(music_view.getMusicId());
 				media_service.editMusic(music_view.getMusicId(), title, year, genreList,valid);	
 				music_view.initTableContent();
 				JOptionPane.showMessageDialog(this.music_view, "The media edited successfully");

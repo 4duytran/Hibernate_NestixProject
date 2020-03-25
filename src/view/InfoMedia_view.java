@@ -5,15 +5,21 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Toolkit;
+import java.awt.List;
+import java.util.Collections;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+
+import controller.InfoMedia_controller;
+import controller.Media_controller;
 
 public class InfoMedia_view extends JFrame {
 
@@ -22,17 +28,28 @@ public class InfoMedia_view extends JFrame {
 	
 	private JPanel panel = new JPanel();
 	private JPanel panelInfo = new JPanel(new GridBagLayout());
-	private JPanel panelEdit= new JPanel();
-	
+	private GridBagConstraints constraints ;
+	private GridBagConstraints constraintsEdit ;
+
+	private JPanel panelEdit= new JPanel(new GridBagLayout());
+
+	private JLabel labelId = new JLabel();
+
 	private JLabel labelTitle = new JLabel("Title");
 	private JLabel labelTitleContent = new JLabel();
 	
+	private JLabel labelType = new JLabel("Media type");
+	private JLabel labelTypeContent = new JLabel();
+
 	private JLabel labelYear = new JLabel("Year");
 	private JLabel labelYearContent = new JLabel();
 	
 	private JLabel labelGenre = new JLabel("Genre");
 	private JLabel labelGenreContent = new JLabel();
 	
+	private JLabel labelIsbn = new JLabel("");
+	private JLabel labelIsbnContent = new JLabel();
+
 	private JLabel labelAutor = new JLabel("");
 	private JLabel labelAutorContent = new JLabel();
 	
@@ -44,30 +61,56 @@ public class InfoMedia_view extends JFrame {
 	
 	private JLabel labelSinger = new JLabel("");
 	private JLabel labelSingerContent = new JLabel();
-
+	
+	private JLabel labelEditor = new JLabel("");
+	private JLabel labelEditorContent = new JLabel();
 
 	private Integer id;
+	
+	private JButton info_add = new JButton("Update");
+	private JButton info_deselect = new JButton("Reset list");
+	
+	private List listArtist= new List(10, true);
 
+	private JComboBox<Object> jobList = new JComboBox<Object>();
+
+	private InfoMedia_controller infoMedia_controller = new InfoMedia_controller(this);
+	
 	public InfoMedia_view()  {
 		super("Info Media");
 		
 		
-		this.setSize(650,450);
+		this.setSize(700,500);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setAlwaysOnTop(true);
+		
 		contentModel();
-		panelInfo.setPreferredSize(new Dimension(350, 400));
-		panelEdit.setPreferredSize(new Dimension(250, 400));
-		panel.add(panelInfo,BorderLayout.WEST);
-		panel.add(panelEdit, BorderLayout.EAST);
+		editModel();
+		
+		labelId.setVisible(false);
+		
+		infoMedia_controller.listArtist();
+		jobList.setModel(new DefaultComboBoxModel<Object>(infoMedia_controller.jobList()));
+		
+		info_add.addActionListener((e) -> infoMedia_controller.addArtistJob(e));
+		info_deselect.addActionListener((e)->infoMedia_controller.deselectList(e));
+		
+		panelInfo.setPreferredSize(new Dimension(350, 450));
+		panelEdit.setPreferredSize(new Dimension(300, 450));
+		
+		panel.add(panelInfo,BorderLayout.EAST);
+		panel.add(panelEdit, BorderLayout.WEST);
 		panelInfo.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(5, 5,5, 5, Color.PINK), "Media Information", TitledBorder.RIGHT, TitledBorder.TOP));
+		panelEdit.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Edit Panel"));
 		
 		this.getContentPane().add(panel);
-		
 	}
 	
-	
+	public JPanel getPanel() {
+		return panel;
+	}
+
 	public JLabel getLabelTitle() {
 		return labelTitle;
 	}
@@ -77,11 +120,21 @@ public class InfoMedia_view extends JFrame {
 		return labelYear;
 	}
 
+	public JLabel getLabelTypeContent() {
+		return labelTypeContent;
+	}
 
 	public JLabel getLabelGenre() {
 		return labelGenre;
 	}
 
+	public JLabel getLabelIsbn() {
+		return labelIsbn;
+	}
+
+	public JLabel getLabelIsbnContent() {
+		return labelIsbnContent;
+	}
 
 	public JLabel getLabelAutor() {
 		return labelAutor;
@@ -126,6 +179,9 @@ public class InfoMedia_view extends JFrame {
 		return id;
 	}
 
+	public JLabel getLabelId() {
+		return labelId;
+	}
 
 	public void setId(Integer id) {
 		this.id = id;
@@ -135,32 +191,60 @@ public class InfoMedia_view extends JFrame {
 		return labelGenreContent;
 	}
 
-
-	public void setLabelGenreContent(JLabel labelGenreContent) {
-		this.labelGenreContent = labelGenreContent;
-	}
-
-
 	public JLabel getLabelAutorContent() {
 		return labelAutorContent;
 	}
-
-
-	public void setLabelAutorContent(JLabel labelAutorContent) {
-		this.labelAutorContent = labelAutorContent;
-	}
-
 
 	public JLabel getLabelActorContent() {
 		return labelActorContent;
 	}
 
+	public GridBagConstraints getConstraints() {
+		return constraints;
+	}
+	
+	public GridBagConstraints getConstraintsEdit() {
+		return constraintsEdit;
+	}
+	
+	public JPanel getPanelInfo() {
+		return panelInfo;
+	}
+	
+	public JPanel getPanelEdit() {
+		return panelEdit;
+	}
+	
+	public JLabel getLabelEditor() {
+		return labelEditor;
+	}
+
+
+	public JLabel getLabelEditorContent() {
+		return labelEditorContent;
+	}
+	
+	public JButton getInfo_add() {
+		return info_add;
+	}
+	
+	public List getListArtist() {
+		return listArtist;
+	}
+
+	public JComboBox<Object> getJobList() {
+		return jobList;
+	}
 
 	private GridBagConstraints contentModel() {
 		
-		GridBagConstraints constraints = new GridBagConstraints();
+		constraints = new GridBagConstraints();
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets = new Insets(10, 10, 10, 10);
+		
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		panelInfo.add(labelId, constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy = 0;
@@ -182,42 +266,35 @@ public class InfoMedia_view extends JFrame {
 		
 		constraints.gridx = 1;
 		panelInfo.add(labelGenreContent, constraints);
-
-		constraints.gridx = 0;
-		constraints.gridy = 3;
-		panelInfo.add(labelDirector, constraints);
-		
-		constraints.gridx = 1;
-		panelInfo.add(labelDirectorContent, constraints);
-		
-		constraints.gridx = 0;
-		constraints.gridy = 4;
-		panelInfo.add(labelAutor, constraints);
-		
-		constraints.gridx = 1;
-		panelInfo.add(labelAutorContent, constraints);
-
-		constraints.gridx = 0;
-		constraints.gridy = 4;
-		panelInfo.add(labelActor, constraints);
-
-		constraints.gridx = 1;
-		panelInfo.add(labelActorContent, constraints);
-		
-		constraints.gridx = 0;
-		constraints.gridy = 4;
-		panelInfo.add(labelSinger, constraints);
-		
-		constraints.gridx = 1;
-		panelInfo.add(labelSingerContent, constraints);
-		
+	
 		return constraints;
 
 	}
 	
+	private GridBagConstraints editModel() {
+		
+		constraintsEdit = new GridBagConstraints();
+		constraintsEdit.anchor = GridBagConstraints.WEST;
+		constraintsEdit.insets = new Insets(10, 10, 10, 10);
+		
+		constraintsEdit.gridx = 0;
+		constraintsEdit.gridy = 0;
+		panelEdit.add(listArtist, constraintsEdit);
+		
+		constraintsEdit.gridx = 0;
+		constraintsEdit.gridy = 1;
+		panelEdit.add(jobList, constraintsEdit);
+		
+		constraintsEdit.gridx = 0;
+		constraintsEdit.gridy = 2;
+		panelEdit.add(info_add, constraintsEdit);
+		
+		constraintsEdit.gridx = 1;
+		panelEdit.add(info_deselect, constraintsEdit);
 
-	
-	
-	
+		return constraintsEdit;
+
+	}
+
 	
 }

@@ -12,6 +12,7 @@ import org.hibernate.query.Query;
 
 import config.HibernateUtil;
 import entity.Genre_entity;
+import entity.Media_Artist_Role_R;
 import entity.Media_entity;
 import entity.Saga_entity;
 
@@ -25,7 +26,7 @@ public class Media_service {
 		try {
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 			tx =session.beginTransaction();
-			Query<Media_entity> query = session.createQuery("select distinct j from media j join fetch j.mediaType left join fetch j.genres left join fetch j.saga", Media_entity.class);
+			Query<Media_entity> query = session.createQuery("select distinct m from media m join fetch m.mediaType left join fetch m.genres left join fetch m.saga", Media_entity.class);
 			medias = query.getResultList();	
 			
 		} catch (Exception e) {
@@ -119,30 +120,6 @@ public class Media_service {
 			}
 		}
 		return medias;
-}
-	
-	public Media_entity getSimpleMedia(String title , Integer year , String type) {
-		Media_entity media = null;
-		Session session = null;
-		Transaction tx = null;
-		try {
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
-			tx = session.beginTransaction();
-			Query<Media_entity> query = session.createQuery("select m from media m join fetch m.mediaType join fetch m.artist_job where m.media_title=?0 and m.media_year=?1 and m.mediaType.mediaType_name=?2", Media_entity.class);
-			query.setParameter(0, title);
-			query.setParameter(1, year);
-			query.setParameter(2, type);
-			media = query.getSingleResult();
-			
-		}  catch (NoResultException e) {
-			System.out.println("No media found");
-		}
-		finally {
-			if(session != null) {
-				session.close();
-			}
-		}
-		return media;
 	}
 	
 	public List<Media_entity> getMedia(String title , Integer year , String type) {
@@ -339,7 +316,7 @@ public class Media_service {
 		}
 	}
 	
-	public void removeGenre(Integer id ) {
+	public void removeMediaGenre(Integer id ) {
 		
 		Session session = null;
 		Transaction tx = null;
@@ -387,7 +364,6 @@ public class Media_service {
 			}
 			return media;
 		}
-	
 	public Media_entity getMediaByIdSimple(Integer id) {
 		Media_entity media = null;
 		Session session = null;

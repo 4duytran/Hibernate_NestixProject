@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import config.HibernateUtil;
+import entity.Media_Artist_Role_R;
 import entity.Media_entity;
 
 public class TestHibernate {
@@ -86,12 +87,14 @@ public class TestHibernate {
 		return media;
 	}
 	
-	public List<Media_entity> getListArtistJob() {
-		List<Media_entity> medias = new ArrayList<Media_entity>();
+	public List<Media_Artist_Role_R> getListArtistJob() {
+		List<Media_Artist_Role_R> medias = new ArrayList<Media_Artist_Role_R>();
 		Session session = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			Query<Media_entity> query = session.createQuery("select distinct m from media m join fetch m.artist_job join fetch m.mediaType", Media_entity.class);
+			Query<Media_Artist_Role_R> query = session.createQuery("select m from role_artiste m join fetch m.artists join fetch m.jobs join fetch m.medias where m.medias.media_id = ?0 and m.jobs.jobName= ?1", Media_Artist_Role_R.class);
+			query.setParameter(0, 35);
+			query.setParameter(1, "Acteur");
 			medias = query.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();

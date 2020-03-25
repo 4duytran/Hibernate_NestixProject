@@ -83,7 +83,7 @@ public class Book_controller extends MouseAdapter  {
 			}	 
 			
 			if (id == null || (medias.size() <= 1 && id.equals(book_view.getBookId())) ) {
-				media_service.removeGenre(book_view.getBookId());
+				media_service.removeMediaGenre(book_view.getBookId());
 				media_service.editBook(book_view.getBookId(), title, year, isbn, saga, genreList, valid);	
 				book_view.initTableContent();
 				JOptionPane.showMessageDialog(this.book_view, "The media edited successfully");

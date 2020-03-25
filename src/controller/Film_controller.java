@@ -76,7 +76,7 @@ public class Film_controller extends MouseAdapter  {
 				id = media.getMedia_id() ;
 			}
 			if (id == null || (medias.size() <= 1 && id.equals(film_view.getFilmId()))) {
-				media_service.removeGenre(film_view.getFilmId());
+				media_service.removeMediaGenre(film_view.getFilmId());
 				media_service.editFilm(film_view.getFilmId(), title, year, saga, genreList, valid);	
 				film_view.initTableContent();
 				JOptionPane.showMessageDialog(this.film_view, "The media edited successfully");

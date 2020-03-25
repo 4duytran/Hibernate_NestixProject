@@ -35,6 +35,7 @@
 
 
 		<!-- Enities to map -->
+		
         <mapping class="entity.Media_entity" />
         <mapping class="entity.MediaType_entity" />
         <mapping class="entity.Genre_entity" />
@@ -44,6 +45,8 @@
         <mapping class="entity.Artist_entity" />
         <mapping class="entity.Job_entity" />
         <mapping class="entity.Level_entity" />
+        <mapping class="entity.Media_Artist_Role_R" />
+        
     </session-factory>
 
 </hibernate-configuration>

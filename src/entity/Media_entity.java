@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,6 +24,7 @@ import javax.persistence.OneToMany;
 public class Media_entity {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@Column(name="media_Id")
 	private Integer media_id;
 	
 	@Column(name = "media_Titre")
@@ -45,6 +47,7 @@ public class Media_entity {
 	@Column(name = "valid", insertable=false)
 	private boolean media_valid ;
 	
+	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {
 	        CascadeType.PERSIST,
 	        CascadeType.MERGE
@@ -57,29 +60,36 @@ public class Media_entity {
 	private Set<Genre_entity> genres = new HashSet<>();
 	
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = {
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {
 	        CascadeType.PERSIST,
 	        CascadeType.MERGE
 	    })
 	@JoinTable(
 			name ="role_artiste",
-			joinColumns = {@JoinColumn(table="media",name="media_Id")},
+			joinColumns = {@JoinColumn(name="media_Id")},
 			inverseJoinColumns = {@JoinColumn(name="metier_Id")}
 			)
 	@MapKeyJoinColumn(name = "artiste_Id")
 	private Map<Artist_entity, Job_entity> artist_job = new HashMap<>();
 	
-
+	
 	@ManyToMany(mappedBy = "medias", cascade = CascadeType.PERSIST)
     private Set<Artist_entity> artists = new HashSet<>();
+
+
+    @OneToMany(mappedBy = "medias", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Media_Artist_Role_R> media_role_artist;
     
-    
-	public Set<Artist_entity> getArtists() {
-		return artists;
+	public Set<Media_Artist_Role_R> getMedia_role_artist() {
+		return media_role_artist;
 	}
 
-	public void setArtists(Set<Artist_entity> artists) {
-		this.artists = artists;
+	public void setMedia_role_artist(Set<Media_Artist_Role_R> media_role_artist) {
+		this.media_role_artist = media_role_artist;
+	}
+
+	public Set<Artist_entity> getArtists() {
+		return artists;
 	}
 
 	public Map<Artist_entity, Job_entity> getArtist_job() {
