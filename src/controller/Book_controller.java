@@ -43,6 +43,10 @@ public class Book_controller extends MouseAdapter  {
 		saga_service.getSagaList(book_view.getB_listSaga());
 	}
 	
+	public void deselectList(ActionEvent e) {
+		book_view.getB_listSaga().deselect(book_view.getB_listSaga().getSelectedIndex());
+	}
+	
 	public BookTableModel tableModel() {
 		List<String> columnsNames = new ArrayList<String>();
 		columnsNames.add("Media Name");

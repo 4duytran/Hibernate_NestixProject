@@ -45,6 +45,7 @@ public class Film_view extends JPanel {
 	private JButton f_edit = new JButton("Edit");
 	private JButton f_delete = new JButton("Delete");
 	
+	private JButton f_deselect = new JButton("reset list");
 	private JButton f_addSaga = new JButton(new ImageIcon(getClass().getResource("/button_plus.png")));
 	private JButton f_addGenre = new JButton(new ImageIcon(getClass().getResource("/button_plus.png")));
 	
@@ -73,6 +74,7 @@ public class Film_view extends JPanel {
 		f_addGenre.addActionListener((e)->film_controller.addNewGenre(e));
 		f_edit.addActionListener((e)->film_controller.updateFilm(e));
 		f_delete.addActionListener((e)->film_controller.removeMedia(e));
+		f_deselect.addActionListener((e)->film_controller.deselectList(e));
 		
 		//Init table
 		initTableContent() ;
@@ -147,6 +149,10 @@ public class Film_view extends JPanel {
 		this.checkbox = checkbox;
 	}
 	
+	public JButton getF_deselect() {
+		return f_deselect;
+	}
+	
 	//Model insert
 	private GridBagConstraints textInsertModel() {
 		
@@ -195,6 +201,9 @@ public class Film_view extends JPanel {
 	        constraints.gridx = 1;
 	        f_content.add(f_listSaga, constraints);
 	        
+	        constraints.gridx = 2;
+	        f_content.add(f_deselect, constraints);
+	        
 	        constraints.gridx = 0;
 	        constraints.gridy = 7;   
 	        f_content.add(f_saga_add, constraints);
@@ -218,6 +227,8 @@ public class Film_view extends JPanel {
 
 	}
 	
+
+
 	public void initTableContent() {
 		f_scroll.setPreferredSize(new Dimension(650, 550));
 		f_table.setFillsViewportHeight(true);

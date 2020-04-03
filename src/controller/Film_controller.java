@@ -43,6 +43,10 @@ public class Film_controller extends MouseAdapter  {
 		saga_service.getSagaList(film_view.getF_listSaga());
 	}
 	
+	public void deselectList(ActionEvent e) {
+		film_view.getF_listSaga().deselect(film_view.getF_listSaga().getSelectedIndex());
+	}
+	
 	public FilmTableModel tableModel() {
 		List<String> columnsNames = new ArrayList<String>();
 		columnsNames.add("Media Name");

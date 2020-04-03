@@ -174,6 +174,7 @@ public class Media_service {
 			
 		}
 		
+	
 	public void editFilm(Integer id, String mediaTitle , Integer mediaYear, String sagaName, String[] listGenre, Boolean valid) {
 			Session session = null;
 			Transaction tx = null;
@@ -190,14 +191,19 @@ public class Media_service {
 					genre.setGenre_name(str);
 					media.addGenre(genre);	
 				}
-				Query<Saga_entity> q = session.createQuery("select s from saga s where s.saga_Name=?0", Saga_entity.class);
-				q.setParameter(0, sagaName);
-				saga = q.getSingleResult();	
-				saga.setSaga_Name(sagaName);
+				if (sagaName != null) {
+					Query<Saga_entity> q = session.createQuery("select s from saga s where s.saga_Name=?0", Saga_entity.class);
+					q.setParameter(0, sagaName);
+					saga = q.getSingleResult();	
+					saga.setSaga_Name(sagaName);
+					
+				} 
+				
 				media.setMedia_title(mediaTitle);
 				media.setMedia_year(mediaYear);
 				media.setMedia_valid(valid);
 				media.setSaga(saga);
+				
 				tx.commit();
 				
 			} catch (Exception e) {
@@ -264,14 +270,19 @@ public class Media_service {
 				genre.setGenre_name(str);
 				media.addGenre(genre);	
 			}
-			Query<Saga_entity> q = session.createQuery("select s from saga s where s.saga_Name=?0", Saga_entity.class);
-			q.setParameter(0, sagaName);
-			saga = q.getSingleResult();	
+			if (sagaName != null) {
+				Query<Saga_entity> q = session.createQuery("select s from saga s where s.saga_Name=?0", Saga_entity.class);
+				q.setParameter(0, sagaName);
+				saga = q.getSingleResult();	
+				saga.setSaga_Name(sagaName);
+				
+			}
+			
 			media.setMedia_title(mediaTitle);
 			media.setMedia_year(mediaYear);
 			media.setIsbn(isbn);
-			media.setSaga(saga);
 			media.setMedia_valid(valid);
+			media.setSaga(saga);
 			tx.commit();
 			
 		} catch (Exception e) {

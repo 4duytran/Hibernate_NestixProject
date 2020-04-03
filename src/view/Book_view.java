@@ -57,6 +57,7 @@ public class Book_view extends JPanel {
 
 	private JButton b_edit = new JButton("Edit");
 	private JButton b_delete = new JButton("Delete");
+	private JButton b_deselect = new JButton("reset list");
 	
 	private JButton b_addSaga = new JButton(new ImageIcon(getClass().getResource("/button_plus.png")));
 	private JButton b_addGenre = new JButton(new ImageIcon(getClass().getResource("/button_plus.png")));
@@ -86,6 +87,7 @@ public class Book_view extends JPanel {
 		b_edit.addActionListener((e)->book_controller.updateBook(e));
 		b_addSaga.addActionListener((e)->book_controller.addNewSaga(e));	
 		b_delete.addActionListener((e) -> book_controller.removeMedia(e));
+		b_deselect.addActionListener((e)->book_controller.deselectList(e));
 		
 		//Init table
 		initTableContent() ;
@@ -156,6 +158,9 @@ public class Book_view extends JPanel {
 	        
 	        constraints.gridx = 1;
 	        b_content.add(b_listSaga, constraints);
+	        
+	        constraints.gridx = 2;
+	        b_content.add(b_deselect, constraints);
 	        
 	        constraints.gridx = 0;
 	        constraints.gridy = 7;   
