@@ -40,7 +40,7 @@ public class Saga_service {
 		return list;
 	}
 	
-	public java.util.List getSagaListName() {
+	public java.util.List<String> getSagaListName() {
 		java.util.List<Saga_entity> mediaSagaList = new ArrayList<Saga_entity>();
 		java.util.List<String> mediaSagaListName = new ArrayList<>();
 		Session session = null;

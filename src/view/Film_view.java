@@ -72,7 +72,7 @@ public class Film_view extends JPanel {
 	
 		f_addSaga.addActionListener((e)->film_controller.addNewSaga(e));
 		f_addGenre.addActionListener((e)->film_controller.addNewGenre(e));
-		f_edit.addActionListener((e)->film_controller.updateFilm(e));
+		f_edit.addActionListener(film_controller::updateFilm);
 		f_delete.addActionListener((e)->film_controller.removeMedia(e));
 		f_deselect.addActionListener((e)->film_controller.deselectList(e));
 		

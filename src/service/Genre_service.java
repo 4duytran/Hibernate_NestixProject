@@ -39,8 +39,8 @@ import entity.Genre_entity;
 			return list;
 		}
 		
-		@SuppressWarnings("rawtypes")
-		public java.util.List getGenreListName() {
+		
+		public java.util.List<String> getGenreListName() {
 			java.util.List<Genre_entity> mediaGenreList = new ArrayList<Genre_entity>();
 			java.util.List<String> mediaGenreListName = new ArrayList<>();
 			Session session = null;

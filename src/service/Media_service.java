@@ -375,6 +375,8 @@ public class Media_service {
 			}
 			return media;
 		}
+	
+	
 	public Media_entity getMediaByIdSimple(Integer id) {
 		Media_entity media = null;
 		Session session = null;
