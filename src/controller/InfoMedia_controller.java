@@ -25,7 +25,10 @@ public class InfoMedia_controller {
 	private Media_Artist_Role_R_service mar;
 	private Integer id;
 	
-
+/**
+ * Constructor of infoMedia
+ * @param infoMedia_view
+ */
 	public InfoMedia_controller (InfoMedia_view infoMedia_view) {
 		this.infoMedia_view = infoMedia_view;
 		media_service = new Media_service();
@@ -34,6 +37,10 @@ public class InfoMedia_controller {
 		
 	}
 	
+	/**
+	 * 2nd Constructor
+	 * @param id
+	 */
 	public InfoMedia_controller (Integer id) {
 		this.id = id;
 	}
@@ -46,10 +53,17 @@ public class InfoMedia_controller {
 		this.id = id;
 	}
 	
+	/**
+	 * Clean list
+	 * @param e
+	 */
 	public void deselectList(ActionEvent e) {
 		infoMedia_view.getListArtist().deselect(infoMedia_view.getListArtist().getSelectedIndex());
 	}
 	
+	/**
+	 * Get list of all artists surname
+	 */
 	public void listArtist() {
 		infoMedia_service.getArtistList(infoMedia_view.getListArtist());
 	}

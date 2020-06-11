@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -21,9 +20,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import com.toedter.calendar.JDateChooser;
-
-import controller.Book_controller;
 import controller.User_controller;
 
 public class User_view extends JPanel {
@@ -77,11 +73,11 @@ public class User_view extends JPanel {
 		add(u_panel);
 	}
 	
-	public void initTableContent() {
+	public void initTableContent(String...value) {
 		u_scroll.setPreferredSize(new Dimension(650, 550));
 		u_table.setFillsViewportHeight(true);
 		u_table.setPreferredScrollableViewportSize(u_scroll.getPreferredSize());
-		u_table.setModel(user_controller.tableModel());
+		u_table.setModel(user_controller.tableModel(value));
 		u_tablecontent.add(u_scroll);
 	}
 	

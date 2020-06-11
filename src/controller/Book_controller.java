@@ -25,7 +25,10 @@ public class Book_controller extends MouseAdapter  {
 	private List<String> listGenre = new ArrayList<String>();
 	private List<String> listSaga = new ArrayList<String>();
 	
-	
+	/**
+	 * Constructor
+	 * @param book_view
+	 */
 	public Book_controller(Book_view book_view) {
 		genre_service = new Genre_service();
 		media_service = new Media_service();
@@ -35,18 +38,32 @@ public class Book_controller extends MouseAdapter  {
 		this.book_view = book_view;
 	}
 	
+	/**
+	 * Show list of genre
+	 */
 	public void genreList() {
 		genre_service.getGenreList(book_view.getB_listGenre());
 	}
 	
+	/**
+	 * Show list of Saga
+	 */
 	public void sagaList() {
 		saga_service.getSagaList(book_view.getB_listSaga());
 	}
 	
+	/**
+	 * Clean list if have selected
+	 * @param e
+	 */
 	public void deselectList(ActionEvent e) {
 		book_view.getB_listSaga().deselect(book_view.getB_listSaga().getSelectedIndex());
 	}
 	
+	/**
+	 * Show table of all books with BookTableModel 
+	 * @return BookTableModel 
+	 */
 	public BookTableModel tableModel() {
 		List<String> columnsNames = new ArrayList<String>();
 		columnsNames.add("Media Name");
@@ -61,6 +78,7 @@ public class Book_controller extends MouseAdapter  {
 		return new BookTableModel(columnsNames, medias);
 	}
 	
+	
 	public void updateBook(ActionEvent e) {
 		List<Media_entity> medias = new ArrayList<Media_entity>();
 		Integer id = null;
@@ -69,12 +87,13 @@ public class Book_controller extends MouseAdapter  {
 		String title = null;
 		Boolean valid = null;
 		
+		// test if the case ISBN is not empty
 		if (!book_view.getTextBookIsbn().getText().equals("")) {
 			isbn = Long.parseLong(book_view.getTextBookIsbn().getText());
 		}
 		String type = "Livre";
-		String saga = book_view.getB_listSaga().getSelectedItem();
-		String[] genreList = book_view.getB_listGenre().getSelectedItems();
+		String saga = book_view.getB_listSaga().getSelectedItem(); // get selected item from saga list
+		String[] genreList = book_view.getB_listGenre().getSelectedItems(); // get seleted item from gerne list
 		if (book_view.getTextBookTitle().getText().isEmpty() || book_view.getTextBookYear().getText().isEmpty()) {
 			JOptionPane.showMessageDialog(this.book_view, "The title and year case are required !", "Error", JOptionPane.ERROR_MESSAGE);
 		} else {
@@ -97,6 +116,10 @@ public class Book_controller extends MouseAdapter  {
 		}
 	}
 	
+	/**
+	 * Delete book
+	 * @param e
+	 */
 	public void removeMedia(ActionEvent e) {
 		Media_entity media = new Media_entity();
 		Integer id = book_view.getBookId();
@@ -121,6 +144,9 @@ public class Book_controller extends MouseAdapter  {
 		}
 	}
 	
+	/*
+	 * Add the new saga in data
+	 */
 	public void addNewSaga(ActionEvent e) {
 			
 			boolean find = false;
@@ -151,8 +177,10 @@ public class Book_controller extends MouseAdapter  {
 			}
 		}
 	
+	/*
+	 * Add the new gerne in data
+	 */
 	public void addNewGenre(ActionEvent e) {
-		
 		boolean find = false;
 		String genreTitle = book_view.getTextBookGenre().getText();
 		

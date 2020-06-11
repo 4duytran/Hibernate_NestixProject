@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,25 +19,37 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 
+// sql table Name
 @Entity(name="media")
 public class Media_entity {
-	@Id
+	//  This value is id in sql 
+	@Id 
+	// Auto increase 
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	// nale of column in sql
 	@Column(name="media_Id")
 	private Integer media_id;
 	
+	// name of column in sql
 	@Column(name = "media_Titre")
 	private String media_title;
 	
 	@Column(name = "media_AnneeSortie")
 	private Integer media_year;
 	
+	/**
+	 *  many media can have only one type of media
+	 *  the value to join is column name typeMedia_Id in sql
+	 *  Media entity join MediaType_entity
+	 *  Fetch mode Lazy
+	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="typeMedia_Id")
 	private MediaType_entity mediaType;
 	
 	@Column(name="livre_ISBN")
 	private Long isbn;
+	
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn(name="saga_Id")
@@ -47,7 +58,15 @@ public class Media_entity {
 	@Column(name = "valid", insertable=false)
 	private boolean media_valid ;
 	
-	
+	/**
+	 * Media entity join with Gerne entity
+	 * One media can have many genre 
+	 * One genre can give to many media
+	 * Sql table  jointure media_genre
+	 * Fetch mode Lazy
+	 * Cascade type Persist and Merge
+	 * 
+	 */
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {
 	        CascadeType.PERSIST,
 	        CascadeType.MERGE
@@ -59,26 +78,17 @@ public class Media_entity {
 			)
 	private Set<Genre_entity> genres = new HashSet<>();
 	
-
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {
-	        CascadeType.PERSIST,
-	        CascadeType.MERGE
-	    })
-	@JoinTable(
-			name ="role_artiste",
-			joinColumns = {@JoinColumn(name="media_Id")},
-			inverseJoinColumns = {@JoinColumn(name="metier_Id")}
-			)
-	@MapKeyJoinColumn(name = "artiste_Id")
-	private Map<Artist_entity, Job_entity> artist_job = new HashMap<>();
-	
-	
+	/**
+	 * Relation many to many with Cascade type Persiste
+	 * Map with java class Artist entity with class attribute medias
+	 */
 	@ManyToMany(mappedBy = "medias", cascade = CascadeType.PERSIST)
     private Set<Artist_entity> artists = new HashSet<>();
 
 
     @OneToMany(mappedBy = "medias", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Media_Artist_Role_R> media_role_artist;
+    
     
 	public Set<Media_Artist_Role_R> getMedia_role_artist() {
 		return media_role_artist;
@@ -92,13 +102,13 @@ public class Media_entity {
 		return artists;
 	}
 
-	public Map<Artist_entity, Job_entity> getArtist_job() {
-		return artist_job;
-	}
-
-	public void setArtist_job(Map<Artist_entity, Job_entity> artist_job) {
-		this.artist_job = artist_job;
-	}
+//	public Map<Artist_entity, Job_entity> getArtist_job() {
+//		return artist_job;
+//	}
+//
+//	public void setArtist_job(Map<Artist_entity, Job_entity> artist_job) {
+//		this.artist_job = artist_job;
+//	}
 
 	
 	public Set<Genre_entity> getGenre() {

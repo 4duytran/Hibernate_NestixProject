@@ -28,14 +28,42 @@ public class Media_controller  extends MouseAdapter {
 	private MediaType_entity mediaType;
 	private Media_view media_view;
 	
+	/**
+	 * Cobstructor of media controller
+	 * @param media_view
+	 */
 	public Media_controller(Media_view media_view) {
+		//Init Media type service
 		mediaType_service = new MediaType_service();
+		// Init Media service
 		media_service = new Media_service();
+		// Init media artist role service
 		mar_service = new Media_Artist_Role_R_service();
 		this.media_view = media_view;
 	}
 	
-	public MediaTableModel tableModel() {
+	/**
+	 * Show table of all media using MediaTableModel
+	 * @return MediaTableModel
+	 */
+//	public MediaTableModel tableModel() {
+//		List<String> columnsNames = new ArrayList<String>();
+//		columnsNames.add("Media Name");
+//		columnsNames.add("Year");
+//		columnsNames.add("Media Genres");
+//		columnsNames.add("Media Saga");
+//		columnsNames.add("Media type");
+//		columnsNames.add("Valid");
+//		List<Media_entity> medias = new ArrayList<Media_entity>();
+//		medias = media_service.getListMedia();
+//		return new MediaTableModel(columnsNames, medias);
+//	}
+	
+	/**
+	 * Show table of all media using MediaTableModel
+	 * @return MediaTableModel
+	 */
+	public MediaTableModel tableModel(String...value) {
 		List<String> columnsNames = new ArrayList<String>();
 		columnsNames.add("Media Name");
 		columnsNames.add("Year");
@@ -44,30 +72,45 @@ public class Media_controller  extends MouseAdapter {
 		columnsNames.add("Media type");
 		columnsNames.add("Valid");
 		List<Media_entity> medias = new ArrayList<Media_entity>();
-		medias = media_service.getListMedia();
+		String search =  value.length > 0 ? value[0] : "";
+		medias = media_service.getListMediaSearch(search);
 		return new MediaTableModel(columnsNames, medias);
 	}
 	
+	/**
+	 * Get list of object media type
+	 * @return Object array
+	 */
 	public Object[] mediaType() {
 		Object[] o = mediaType_service.getListMediaType();
 		return o;
 	}
 	
+	/**
+	 * Create new media
+	 * @param e
+	 */
 	public void creatMedia(ActionEvent e) {
 		String title = media_view.getTextMediaTitle().getText();
-		Integer year = Integer.parseInt(media_view.getTextMediaYear().getText());
+		Integer year = Integer.parseInt(Media_view.getTextMediaYear().getText());
 		String type = media_view.getObjectList().getSelectedItem().toString();
 		List<Media_entity> medias = new ArrayList<Media_entity>();
+		// Test the title input is valid
 		if (title.length() > 0 && type.length() > 0 && !type.equals("--None--") && !title.equalsIgnoreCase("Title of new media")) {
+			// Get object media by using getMedia method from media service
 			medias = media_service.getMedia(title, year, type);
+			// Check if the media was not existed in sql we can create the new 
 			if (medias.isEmpty()) {
 			Media_entity media = new Media_entity();
+			// Get list of media type by using media type service
 			mediaType = mediaType_service.getMediaTypeId(type);
 			media.setMedia_title(title);
 			media.setMedia_year(year);
 			media.setMedia_type(mediaType);
 			media.setMedia_valid(true);
+			// Create the new media by using media service
 			media_service.creatMedia(media);
+			// Reload the table in view for can show the new media just created above
 			media_view.initTableContent();
 			JOptionPane.showMessageDialog(this.media_view, "New media added successfully");
 			} else {

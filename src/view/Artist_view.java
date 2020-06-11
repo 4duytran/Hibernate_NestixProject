@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -15,9 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-
-import com.toedter.calendar.JDateChooser;
-
 import controller.Artist_controller;
 
 public class Artist_view extends JPanel {
@@ -38,7 +34,7 @@ public class Artist_view extends JPanel {
 	private JTextField textArtistLastName = new JTextField(20);
 	private JTextField textArtistSurName = new JTextField(20);
 	private JTextField textArtistDob = new JTextField(9);
-	private JDateChooser dateChoice = new JDateChooser();
+//	private JDateChooser dateChoice = new JDateChooser();
 
 	private JButton a_add = new JButton("Add new artist");
 	private JButton a_edit = new JButton("Edit");
@@ -64,7 +60,6 @@ public class Artist_view extends JPanel {
 		a_delete.addActionListener((e)->artist_controller.removeArtist(e));
 		a_add.addActionListener((e)->artist_controller.creatNewArtist(e));
 		
-		dateChoice.setDateFormatString("dd-MM-yyyy");
 		
 		a_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.PINK),"ARTIST Panel ", TitledBorder.RIGHT, TitledBorder.TOP));
 		a_panel.add(a_content, BorderLayout.CENTER);
@@ -73,11 +68,11 @@ public class Artist_view extends JPanel {
 		add(a_panel);
 	}
 	
-	public void initTableContent() {
+	public void initTableContent(String...value) {
 		a_scroll.setPreferredSize(new Dimension(650, 550));
 		a_table.setFillsViewportHeight(true);
 		a_table.setPreferredScrollableViewportSize(a_scroll.getPreferredSize());
-		a_table.setModel(artist_controller.tableModel());
+		a_table.setModel(artist_controller.tableModel(value));
 		a_tablecontent.add(a_scroll);
 	}
 	
@@ -173,9 +168,5 @@ public class Artist_view extends JPanel {
 	public void setTextArtistDob(JTextField textArtistDob) {
 		this.textArtistDob = textArtistDob;
 	}
-	
-	public JDateChooser getDateChoice() {
-		return dateChoice;
-	}
-	
+		
 }

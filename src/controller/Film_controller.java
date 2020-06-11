@@ -25,7 +25,10 @@ public class Film_controller extends MouseAdapter  {
 	private List<String> listGenre = new ArrayList<String>();
 	private List<String> listSaga = new ArrayList<String>();
 	
-	
+	/**
+	 * Constructor of Film controller
+	 * @param film_view
+	 */
 	public Film_controller(Film_view film_view) {
 		genre_service = new Genre_service();
 		media_service = new Media_service();
@@ -35,18 +38,32 @@ public class Film_controller extends MouseAdapter  {
 		this.film_view = film_view;
 	}
 	
+	/**
+	 * Show list of genre
+	 */
 	public void genreList() {
 		genre_service.getGenreList(film_view.getF_listGenre());
 	}
 	
+	/**
+	 * Show list of Saga
+	 */
 	public void sagaList() {
 		saga_service.getSagaList(film_view.getF_listSaga());
 	}
 	
+	/**
+	 * Clean selected list
+	 * @param e
+	 */
 	public void deselectList(ActionEvent e) {
 		film_view.getF_listSaga().deselect(film_view.getF_listSaga().getSelectedIndex());
 	}
 	
+	/**
+	 * Show table of all films
+	 * @return FilmTableModel
+	 */
 	public FilmTableModel tableModel() {
 		List<String> columnsNames = new ArrayList<String>();
 		columnsNames.add("Media Name");
@@ -60,6 +77,10 @@ public class Film_controller extends MouseAdapter  {
 		return new FilmTableModel(columnsNames, medias);
 	}
 	
+	/**
+	 * Edit film method
+	 * @param e
+	 */
 	public void updateFilm(ActionEvent e) {
 		List<Media_entity> medias = new ArrayList<Media_entity>();
 		Integer id = null;
@@ -91,6 +112,10 @@ public class Film_controller extends MouseAdapter  {
 		
 	}
 	
+	/**
+	 * Delete on film in data
+	 * @param e
+	 */
 	public void removeMedia(ActionEvent e) {
 		Media_entity media = new Media_entity();
 		Integer id = film_view.getFilmId();
@@ -114,6 +139,10 @@ public class Film_controller extends MouseAdapter  {
 		}
 	}
 	
+	/**
+	 * Add new saga in data
+	 * @param e
+	 */
 	public void addNewSaga(ActionEvent e) {
 		
 		boolean find = false;
@@ -144,6 +173,10 @@ public class Film_controller extends MouseAdapter  {
 		}
 	}
 	
+	/**
+	 * Add new genre in data
+	 * @param e
+	 */
 	public void addNewGenre(ActionEvent e) {
 			
 			boolean find = false;

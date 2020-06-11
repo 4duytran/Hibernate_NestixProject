@@ -31,13 +31,20 @@ public class User_controller extends MouseAdapter{
 		level_serive = new Level_service();
 		this.user_view = user_view;
 	}
-	
+/**
+ * List of user's rank
+ * @return array object
+ */
 	public Object[] userLevelList() {
 		Object[] o = level_serive.getLevelList();
 		return o;
 	}
 	
-	public UserTableModel tableModel() {
+	/**
+	 * Show tab of all users using UserTableModel
+	 * @return UserTableModel
+	 */
+	public UserTableModel tableModel(String...value) {
 		List<String> columnsNames = new ArrayList<String>();
 		columnsNames.add("First Name");
 		columnsNames.add("Last Name");
@@ -46,10 +53,15 @@ public class User_controller extends MouseAdapter{
 		columnsNames.add("Date registered");
 		columnsNames.add("Banned");
 		List<User_entity> users = new ArrayList<User_entity>();
-		users = user_service.getListUser();
+		String search =  value.length > 0 ? value[0] : "";
+		users = user_service.getListUser(search);
 		return new UserTableModel(columnsNames, users);
 	}
 	
+	/**
+	 * Fonction update user info
+	 * @param e
+	 */
 	public void updateUser(ActionEvent e) {
 		User_entity user = null;
 		String firstName = null;
@@ -59,23 +71,28 @@ public class User_controller extends MouseAdapter{
 		Boolean banned = null;
 		String level = null;
 		
+		// test if the cases are not empty
 		if (!user_view.getTextUserFirstName().getText().isEmpty() && !user_view.getTextUserLastName().getText().isEmpty() && !user_view.getTextUserEmail().getText().isEmpty()) {
 			firstName = Capitalize.upperCaseAllFirst(user_view.getTextUserFirstName().getText());
 			lastName = Capitalize.upperCaseAllFirst(user_view.getTextUserLastName().getText());
 			email = user_view.getTextUserEmail().getText();
 			level = user_view.getLeveltList().getSelectedItem().toString();
 			banned = user_view.getCheckbox().isSelected();
-			String regexEmail = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-			Pattern patternEmail = Pattern.compile(regexEmail);
-			Matcher matcherEmail = patternEmail.matcher(email);
+			// Verify email format with regex
+			String regexEmail = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$"; // String regex
+			Pattern patternEmail = Pattern.compile(regexEmail); // Compile Regex string with Pattern java class
+			Matcher matcherEmail = patternEmail.matcher(email); // Check email string with Regex string by using Matcher java class, return Boolean
 			
 			String regexName = "^[a-zA-Z ']+$";
 			Pattern patternName = Pattern.compile(regexName);
 			Matcher matcherFirstName = patternName.matcher(firstName);
 			Matcher matcherLastName = patternName.matcher(lastName);
+			// if not match email will show error
 			if (!matcherEmail.matches()) {
 				JOptionPane.showMessageDialog(this.user_view, "The email is invalid format !", "Error", JOptionPane.ERROR_MESSAGE);
-			} else if (!matcherFirstName.matches() || !matcherLastName.matches()) {
+			} 
+			// Test if regex match firstname and lastname
+			else if (!matcherFirstName.matches() || !matcherLastName.matches())  {
 				JOptionPane.showMessageDialog(this.user_view, "The First name or Last name is invalid format !", "Error", JOptionPane.ERROR_MESSAGE);
 			} else {
 				user = user_service.checkUserExiste(user_view.getUserId(), email);
@@ -84,9 +101,9 @@ public class User_controller extends MouseAdapter{
 				} else {
 					user = user_service.getUserById(user_view.getUserId());
 					if (user_view.getTextUserPassword().getPassword().length != 0) {
-						password = new String(user_view.getTextUserPassword().getPassword());
-						password = BCrypt.hashpw(password, BCrypt.gensalt(12));
-						password = password.replaceFirst("2a", "2y");
+						password = new String(user_view.getTextUserPassword().getPassword()); // Get input password
+						password = BCrypt.hashpw(password, BCrypt.gensalt(12)); // Encrypt the password with cost 12
+						password = password.replaceFirst("2a", "2y"); // Change hash compatible with PHP BCrypt
 					} else {
 						password = user.getUsePassword();
 					}
@@ -103,6 +120,10 @@ public class User_controller extends MouseAdapter{
 		
 	}
 	
+	/**
+	 * Fonction create new user
+	 * @param e
+	 */
 	public void creatNewUser(ActionEvent e) {
 		User_entity user = null;
 		String firstName = null;
@@ -110,25 +131,30 @@ public class User_controller extends MouseAdapter{
 		String email = null;
 		String  password = null;
 		String level = null;
+		
+		//Test if the form is not empty
 		if (!user_view.getTextUserFirstName().getText().isEmpty() && !user_view.getTextUserLastName().getText().isEmpty() && !user_view.getTextUserEmail().getText().isEmpty() && user_view.getTextUserPassword().getPassword().length != 0) {
 			firstName = Capitalize.upperCaseAllFirst(user_view.getTextUserFirstName().getText());
 			lastName = Capitalize.upperCaseAllFirst(user_view.getTextUserLastName().getText());
 			email = user_view.getTextUserEmail().getText();
 			level = user_view.getLeveltList().getSelectedItem().toString();
 			password = new String(user_view.getTextUserPassword().getPassword());
+			// use BCrypt for create password hash with salt 12
 			password = BCrypt.hashpw(password, BCrypt.gensalt(12));
+			// Replace the first letter for the hash can have the same value as php site
 			password = password.replaceFirst("2a", "2y");
-			
-			String regexEmail = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-			Pattern patternEmail = Pattern.compile(regexEmail);
-			Matcher matcherEmail = patternEmail.matcher(email);
+			// Verify email format with regex
+			String regexEmail = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$"; // Regex string
+			Pattern patternEmail = Pattern.compile(regexEmail); // Compile Regex string with Pattern java class
+			Matcher matcherEmail = patternEmail.matcher(email);  // Check email string with Regex string by using Matcher java class, return Boolean
 			
 			String regexName = "^[a-zA-Z ']+$";
 			Pattern patternName = Pattern.compile(regexName);
 			Matcher matcherFirstName = patternName.matcher(firstName);
 			Matcher matcherLastName = patternName.matcher(lastName);
 			
-			if (!matcherEmail.matches()) {
+			if (!matcherEmail.matches())  // if not match email will show error
+			{
 				JOptionPane.showMessageDialog(this.user_view, "The email is invalid format !", "Error", JOptionPane.ERROR_MESSAGE);
 			} else if (!matcherFirstName.matches() || !matcherLastName.matches()) {
 				JOptionPane.showMessageDialog(this.user_view, "The First name or Last name is invalid format !", "Error", JOptionPane.ERROR_MESSAGE);

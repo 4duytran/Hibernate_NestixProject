@@ -26,13 +26,20 @@ public class Artist_controller extends MouseAdapter{
 	private Artist_view artist_view ;
 	private Artist_service artist_service;
 	
-	
+	/**
+	 * Constructor artist controller with its view
+	 * @param artist_view
+	 */
 	public Artist_controller(Artist_view artist_view) {
 		artist_service = new Artist_service();
 		this.artist_view = artist_view;
 	}
 	
-	public ArtistTableModel tableModel() {
+	/**
+	 * Fonction show tab all artists by using ArtistTableModel class
+	 * @return ArtistTableModel
+	 */
+	public ArtistTableModel tableModel(String...value) {
 		List<String> columnsNames = new ArrayList<String>();
 		columnsNames.add("First Name");
 		columnsNames.add("Last Name");
@@ -40,20 +47,26 @@ public class Artist_controller extends MouseAdapter{
 		columnsNames.add("Date of birthday");
 		
 		List<Artist_entity> artists = new ArrayList<Artist_entity>();
-		artists = artist_service.getListArtist();
+		String search =  value.length > 0 ? value[0] : "";
+		artists = artist_service.getListArtist(search);
 		return new ArtistTableModel(columnsNames, artists);
 	}
 	
+	
+	/**
+	 * Function edit artist
+	 * @param e
+	 */
 	public void editArtist(ActionEvent e) {
 		Integer id = artist_view.getArtistId();
 		String firstName = null;
 		String lastName = null;
 		String surName = null;
 		String dob = null;
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy"); // Create format for date
 		Date dateDob = null;
 		java.sql.Date sqlDob  = null;
-		
+		// check the form is not empty
 		if (!artist_view.getTextArtistFirstName().getText().isEmpty() && !artist_view.getTextArtistLastName().getText().isEmpty() && !artist_view.getTextArtistSurName().getText().isEmpty() ) {
 			firstName = Capitalize.upperCaseAllFirst(artist_view.getTextArtistFirstName().getText());
 			lastName = Capitalize.upperCaseAllFirst(artist_view.getTextArtistLastName().getText());
@@ -115,11 +128,17 @@ public class Artist_controller extends MouseAdapter{
 		}
 	}
 	
+	/**
+	 * Fonction remove a artist
+	 * @param e
+	 */
 	public void removeArtist(ActionEvent e) {
 		Integer id = artist_view.getArtistId();
+		// Check if artist id is not null
 		if (id != null) {
 			Artist_entity artist = artist_service.getArtistById(id);
 			int reponse = JOptionPane.showConfirmDialog(this.artist_view, "Do you want to delete the artist  "+artist.getSurName().toUpperCase()+" ?", "Delete media confirmation", JOptionPane.YES_NO_OPTION);
+			// Check if confirmation is true  == 0 (Yes) with JOptionPane
 			if (reponse == 0) {
 				artist_service.removeArtist(id);
 				artist_view.initTableContent();
@@ -135,6 +154,10 @@ public class Artist_controller extends MouseAdapter{
 		}
 	}
 	
+	/**
+	 * Create the new artist
+	 * @param e
+	 */
 	public void creatNewArtist(ActionEvent e) {
 		Artist_entity artist = null;
 		String firstName = null;
@@ -145,26 +168,35 @@ public class Artist_controller extends MouseAdapter{
 		Date dateDob = null;
 		java.sql.Date sqlDob  = null;
 		
-		if (!artist_view.getTextArtistFirstName().getText().isEmpty() && !artist_view.getTextArtistLastName().getText().isEmpty() && !artist_view.getTextArtistSurName().getText().isEmpty() && !artist_view.getTextArtistDob().getText().isEmpty() ) {
+		if(!artist_view.getTextArtistDob().getText().isEmpty())
+		{
+			// Block try catch to test date in form is match with regex
+			dob = artist_view.getTextArtistDob().getText();
+						try {
+							// We create new string for REGEX
+							String regexDob = "^(3[01]|[12][0-9]|0[1-9])-(1[0-2]|0[1-9])-[0-9]{4}$";
+							// Use Java class Pattern to compile the REGEX string
+							Pattern patternDob= Pattern.compile(regexDob);
+							// Use Java class Matcher to compare our string with the REGEX string
+							Matcher matcherDob = patternDob.matcher(dob);
+							if (matcherDob.matches()) {
+								dateDob = formatter.parse(dob);
+								sqlDob = new java.sql.Date(dateDob.getTime());
+							} else {
+								JOptionPane.showMessageDialog(this.artist_view, "Date of birth is wrong format (dd-mm-yyyy) !", "Error", JOptionPane.ERROR_MESSAGE);
+								return;
+							}
+								
+						} catch (ParseException e1) {
+							e1.printStackTrace();
+						}
+		}
+		
+		if (!artist_view.getTextArtistFirstName().getText().isEmpty() && !artist_view.getTextArtistLastName().getText().isEmpty() && !artist_view.getTextArtistSurName().getText().isEmpty()  ) {
 			firstName = Capitalize.upperCaseAllFirst(artist_view.getTextArtistFirstName().getText());
 			lastName = Capitalize.upperCaseAllFirst(artist_view.getTextArtistLastName().getText());
 			surName = Capitalize.upperCaseAllFirst(artist_view.getTextArtistSurName().getText());
-			dob = artist_view.getTextArtistDob().getText();
-			try {
-				String regexDob = "^(3[01]|[12][0-9]|0[1-9])-(1[0-2]|0[1-9])-[0-9]{4}$";
-				Pattern patternDob= Pattern.compile(regexDob);
-				Matcher matcherDob = patternDob.matcher(dob);
-				if (matcherDob.matches()) {
-					dateDob = formatter.parse(dob);
-					sqlDob = new java.sql.Date(dateDob.getTime());
-				} else {
-					JOptionPane.showMessageDialog(this.artist_view, "Date of birth is wrong format (dd-mm-yyyy) !", "Error", JOptionPane.ERROR_MESSAGE);
-				}
-					
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			
 			String regexName = "^[a-zA-Z ']+$";
 			Pattern patternName = Pattern.compile(regexName);
 			
@@ -172,7 +204,7 @@ public class Artist_controller extends MouseAdapter{
 			Matcher matcherLastName = patternName.matcher(lastName);
 			Matcher matcherSurName = patternName.matcher(surName);
 			
-			if (matcherFirstName.matches() && matcherLastName.matches() && matcherSurName.matches()) {
+			if (matcherFirstName.matches() && matcherLastName.matches() && matcherSurName.matches() ) {
 				
 				artist = artist_service.getArtistBySurName(surName);
 				
@@ -189,7 +221,7 @@ public class Artist_controller extends MouseAdapter{
 					artist_view.getTextArtistLastName().setText("");
 					artist_view.getTextArtistSurName().setText("");
 					artist_view.getTextArtistDob().setText("");
-					JOptionPane.showMessageDialog(this.artist_view, "The user created successfully");
+					JOptionPane.showMessageDialog(this.artist_view, "The artiste created successfully");
 					
 				} else {
 					
@@ -211,6 +243,9 @@ public class Artist_controller extends MouseAdapter{
 		
 	}
 	
+	/**
+	 * Override fonction mouseClicked from MouseAdapter java class
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		

@@ -14,24 +14,24 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 
 
-@Entity(name="utilisateur")
-@PrimaryKeyJoinColumn(name = "utilisateur_Id")
+@Entity(name="utilisateur") // Name of sql table
+@PrimaryKeyJoinColumn(name = "utilisateur_Id") // Primary key SQL
 
 public class User_entity  extends Person_entity{
 
-	@Column(name="utilisateur_EMail")
+	@Column(name="utilisateur_EMail") // Name of SQL column
 	private String userEmail;
 	
-	@Column(name="utilisateur_Password")
+	@Column(name="utilisateur_Password") // Name of SQL column
 	private String usePassword;
 	
-	@Column(name="utilisateur_DateCreation", insertable=false)
-	@Temporal(TemporalType.TIMESTAMP)
-	@CreationTimestamp
+	@Column(name="utilisateur_DateCreation", insertable=false)  // Name of SQL column with param optional for insert statement
+	@Temporal(TemporalType.TIMESTAMP) // Value Timestamp in SQL
+	@CreationTimestamp // Auto insertion with time
 	private Date date;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="level_Id")
+	@ManyToOne(fetch = FetchType.LAZY)  // Ralation manyToOne with param fetch Lazy 
+	@JoinColumn(name="level_Id") // Name of the SQL colomn for jointure
 	private Level_entity level;
 
 	@Column(name="utilisateur_Bloque", insertable=false)

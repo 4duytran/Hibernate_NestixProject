@@ -50,19 +50,21 @@ public class Media_view extends JPanel {
 	private  Media_controller media_controller;
 	
 	
-	
+	/**
+	 * Constructor of Media view
+	 */
 	public Media_view() {
-	
+		// Init media controller
 		media_controller = new Media_controller(this);
+		// Limit input for year
 		textMediaYear.setDocument(new Checklimit(4));
 		textMediaYear.setPlaceholder("2000");
 		textMediaTitle.setPlaceholder("Title of new media");
 
-		
+		// get list of media type from controller
 		objectList.setModel(new DefaultComboBoxModel<Object>(media_controller.mediaType()));
 		objectList.insertItemAt("--None--", 0);
 		objectList.setSelectedIndex(0);
-		
 		buttonInsert.addActionListener((e) -> media_controller.creatMedia(e));
 			
 		//Init table
@@ -71,8 +73,11 @@ public class Media_view extends JPanel {
 		// ADD PANEL TO INTERFACE
 		m_content.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.PINK),
 				" MEDIA Panel  ", TitledBorder.RIGHT, TitledBorder.TOP));
+		// Add input to view
 		textInsertModel();
+		// add view content
 		m_panel.add(m_content);
+		// add view table
 		m_panel.add(m_tablecontent);
 		m_panel.setVisible(true);
 		add(m_panel);
@@ -147,11 +152,11 @@ public class Media_view extends JPanel {
 
 	}
 	
-	public void initTableContent() {
+	public void initTableContent(String...value) {
 		scrollAll.setPreferredSize(new Dimension(650, 550));
 		m_table.setFillsViewportHeight(true);
 		m_table.setPreferredScrollableViewportSize(scrollAll.getPreferredSize());
-		m_table.setModel(media_controller.tableModel());
+		m_table.setModel(media_controller.tableModel(value));
 		m_tablecontent.add(scrollAll);
 	}
 	

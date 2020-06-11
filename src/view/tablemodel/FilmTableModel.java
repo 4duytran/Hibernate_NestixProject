@@ -1,13 +1,10 @@
 package view.tablemodel;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JCheckBox;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 
 import entity.Genre_entity;
 import entity.Media_entity;

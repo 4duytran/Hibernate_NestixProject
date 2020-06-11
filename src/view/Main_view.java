@@ -15,6 +15,7 @@ import javax.swing.JToolBar;
 
 import config.Login;
 import controller.Main_controller;
+import controller.Search_controller;
 import utile.TextPlaceHolder;
 
 public class Main_view extends JFrame implements ActionListener{
@@ -24,7 +25,7 @@ public class Main_view extends JFrame implements ActionListener{
 	private JPanel main = new JPanel();
 	private CardLayout content = new CardLayout();
 
-	private static TextPlaceHolder textSearch = new TextPlaceHolder(10);
+	private TextPlaceHolder textSearch = new TextPlaceHolder(10);
 	
 	private Media_view mediaPanel = new Media_view();
 	private Film_view filmPanel = new Film_view();
@@ -45,9 +46,20 @@ public class Main_view extends JFrame implements ActionListener{
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		main_controller = new Main_controller(this);
+		
+		textSearch.addKeyListener(new Search_controller(this));
 		// Add main window
 		
 		main.setLayout(content);
+		// Here we will set name for each Panel , its using for get name from Search
+		mediaPanel.setName("Media");
+		filmPanel.setName("Film");
+		bookPanel.setName("Book");
+		musicPanel.setName("Music");
+		userPanel.setName("User");
+		artistPanel.setName("Artist");
+		
+		// Add all panel into the CardLayout
 		
 		main.add(mediaPanel, "Media Panel");
 		main.add(filmPanel, "Film Panel");
@@ -91,7 +103,7 @@ public class Main_view extends JFrame implements ActionListener{
 	}
 
 
-	public static TextPlaceHolder getTextSearch() {
+	public TextPlaceHolder getTextSearch() {
 		return textSearch;
 	}
 
@@ -150,6 +162,7 @@ public class Main_view extends JFrame implements ActionListener{
 		JButton buttonSearch = new JButton(new ImageIcon(getClass().getResource("/loupe.png")));
 		toolBar.add(textSearch);
 		toolBar.add(buttonSearch);
+		
 
 		
 		return toolBar;

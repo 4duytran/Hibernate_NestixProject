@@ -22,7 +22,7 @@ import entity.User_entity;
 
 public class Artist_service {
 
-	public List<Artist_entity> getListArtist() {
+	public List<Artist_entity> getListArtist(String search) {
 		
 		List<Artist_entity> artists = new ArrayList<Artist_entity>();
 		Session session = null;
@@ -31,7 +31,8 @@ public class Artist_service {
 		try {
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 			tx = session.beginTransaction();
-			Query<Artist_entity> q = session.createQuery("select a from artiste a order by a.p_id", Artist_entity.class);
+			Query<Artist_entity> q = session.createQuery("select a from artiste a where a.surName like ?0 order by a.p_id", Artist_entity.class);
+			q.setParameter(0, "%"+search+"%");
 			artists = q.getResultList();
 		} catch (Exception e) {
 			if (tx != null) {

@@ -6,12 +6,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+// SQL table name
 @Entity(name="type_media")
 public class MediaType_entity {
 
-	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	@Column(name="typeMedia_Id")
+	@Id  // Unique key
+	@GeneratedValue (strategy = GenerationType.IDENTITY) // Auto increase
+	@Column(name="typeMedia_Id") // SQL column name
 	private Integer mediaType_id;
 	
 	@Column(name="typeMedia_Nom")
