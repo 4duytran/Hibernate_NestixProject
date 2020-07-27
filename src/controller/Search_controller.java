@@ -8,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -56,27 +58,38 @@ public class Search_controller  extends KeyAdapter {
 	 * Search item
 	 */
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void keyTyped(KeyEvent e) {
 		// Here we will try to get Compoment of the main view
-		Component card = null;
-		for (Component comp : main_view.getMain().getComponents()) {
-		    if (comp.isVisible() == true) {
-		        card = comp;
-		    }
-		}
-		String value = main_view.getTextSearch().getText();
+		String key = String.valueOf(e.getKeyChar());
+		String regex = "^[a-zA-Z ']+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(key);
 		
-		// Get name of Cardlayout then search item
-		switch(card.getName()) {
-		case "Media":
-			main_view.getMediaPanel().initTableContent(value);
-		case "Artist":
-			main_view.getArtistPanel().initTableContent(value);
-		case "User":
-		main_view.getUserPanel().initTableContent(value);
-		default:
-			main_view.getMediaPanel().initTableContent(value);
+		if (matcher.matches())
+		{
+			
+			Component card = null;
+			for (Component comp : main_view.getMain().getComponents()) {
+				    if (comp.isVisible() == true) {
+				        card = comp;
+				    }
+				}
+			String value = main_view.getTextSearch().getText();
+			
+			// Get name of Cardlayout then search item
+			switch(card.getName()) {
+				case "Media":
+					main_view.getMediaPanel().initTableContent(value);
+				case "Artist":
+					main_view.getArtistPanel().initTableContent(value);
+				case "User":
+				main_view.getUserPanel().initTableContent(value);
+				default:
+					main_view.getMediaPanel().initTableContent(value);
+			}
+				
 		}
+		
 		
 //		System.out.println(card.getName());
 	}
